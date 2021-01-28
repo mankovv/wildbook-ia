@@ -60,6 +60,8 @@
 <span class="kn">from</span> <span class="nn">wbia.algo.graph.state</span> <span class="kn">import</span> <span class="n">SAME</span><span class="p">,</span> <span class="n">DIFF</span><span class="p">,</span> <span class="n">NULL</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
 
 <span class="nb">print</span><span class="p">,</span> <span class="n">rrr</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">inject2</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;wbia&#39;</span><span class="p">)</span>
@@ -1294,6 +1296,7 @@
 
         <span class="c1"># A generator that maintains the state of the algorithm</span>
         <span class="n">infr</span><span class="o">.</span><span class="n">_gen</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">infr</span><span class="o">.</span><span class="n">_gen_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
         <span class="c1"># Computer vision algorithms</span>
         <span class="n">infr</span><span class="o">.</span><span class="n">ranker</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1606,7 +1609,7 @@
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

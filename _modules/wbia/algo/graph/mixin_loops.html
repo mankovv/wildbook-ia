@@ -142,8 +142,11 @@
         <span class="k">if</span> <span class="n">infr</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;redun.enabled&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">infr</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;redun.enforce_pos&#39;</span><span class="p">]:</span>
             <span class="n">infr</span><span class="o">.</span><span class="n">loop_phase</span> <span class="o">=</span> <span class="s1">&#39;pos_redun_init&#39;</span>
             <span class="c1"># Fix positive redundancy of anything within the loop</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">infr</span><span class="o">.</span><span class="n">pos_redun_gen</span><span class="p">():</span>
-                <span class="k">yield</span> <span class="n">_</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">infr</span><span class="o">.</span><span class="n">pos_redun_gen</span><span class="p">():</span>
+                    <span class="k">yield</span> <span class="n">_</span>
+            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                <span class="k">pass</span>
 
         <span class="n">infr</span><span class="o">.</span><span class="n">phase</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">infr</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;ranking.enabled&#39;</span><span class="p">]:</span>
@@ -197,7 +200,9 @@
         <span class="n">infr</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Exiting main loop&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">infr</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;inference.enabled&#39;</span><span class="p">]:</span>
-            <span class="n">infr</span><span class="o">.</span><span class="n">assert_consistency_invariant</span><span class="p">()</span></div>
+            <span class="n">infr</span><span class="o">.</span><span class="n">assert_consistency_invariant</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="s1">&#39;finished&#39;</span></div>
 
 <div class="viewcode-block" id="InfrLoops.hardcase_review_gen"><a class="viewcode-back" href="../../../../wbia.algo.graph.html#wbia.algo.graph.mixin_loops.InfrLoops.hardcase_review_gen">[docs]</a>    <span class="k">def</span> <span class="nf">hardcase_review_gen</span><span class="p">(</span><span class="n">infr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -513,6 +518,7 @@
 <span class="sd">        or assert not any(infr.main_gen())</span>
 <span class="sd">        maybe this is fine.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span>
         <span class="n">infr</span><span class="o">.</span><span class="n">start_id_review</span><span class="p">(</span><span class="n">max_loops</span><span class="o">=</span><span class="n">max_loops</span><span class="p">,</span> <span class="n">use_refresh</span><span class="o">=</span><span class="n">use_refresh</span><span class="p">)</span>
         <span class="c1"># To automatically run through the loop just exhaust the generator</span>
         <span class="n">result</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">infr</span><span class="o">.</span><span class="n">_gen</span><span class="p">)</span>
@@ -665,14 +671,30 @@
         <span class="n">infr</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;continue_review&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">infr</span><span class="o">.</span><span class="n">_gen</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">user_request</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">infr</span><span class="o">.</span><span class="n">_gen</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+
+        <span class="n">hungry</span><span class="p">,</span> <span class="n">finished</span><span class="p">,</span> <span class="n">attempt</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">hungry</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">attempt</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">with</span> <span class="n">infr</span><span class="o">.</span><span class="n">_gen_lock</span><span class="p">:</span>
+                    <span class="n">user_request</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">infr</span><span class="o">.</span><span class="n">_gen</span><span class="p">)</span>
+                <span class="n">hungry</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">if</span> <span class="n">attempt</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
+                <span class="n">hungry</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">finished</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user_request</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">user_request</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;finished&#39;</span><span class="p">]:</span>
+                <span class="n">hungry</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">finished</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">finished</span><span class="p">:</span>
             <span class="n">review_finished</span> <span class="o">=</span> <span class="n">infr</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;review_finished&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">review_finished</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">review_finished</span><span class="p">()</span>
             <span class="n">infr</span><span class="o">.</span><span class="n">_gen</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">user_request</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="k">return</span> <span class="n">user_request</span></div>
 
 <div class="viewcode-block" id="InfrReviewers.qt_edge_reviewer"><a class="viewcode-back" href="../../../../wbia.algo.graph.html#wbia.algo.graph.mixin_loops.InfrReviewers.qt_edge_reviewer">[docs]</a>    <span class="k">def</span> <span class="nf">qt_edge_reviewer</span><span class="p">(</span><span class="n">infr</span><span class="p">,</span> <span class="n">edge</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -871,7 +893,7 @@
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
