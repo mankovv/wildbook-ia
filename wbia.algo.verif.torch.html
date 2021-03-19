@@ -40,29 +40,442 @@
 <div class="section" id="wbia-algo-verif-torch-fit-harness-module">
 <h2>wbia.algo.verif.torch.fit_harness module<a class="headerlink" href="#wbia-algo-verif-torch-fit-harness-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="wbia-algo-verif-torch-gpu-util-module">
-<h2>wbia.algo.verif.torch.gpu_util module<a class="headerlink" href="#wbia-algo-verif-torch-gpu-util-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wbia.algo.verif.torch.gpu_util">
+<span id="wbia-algo-verif-torch-gpu-util-module"></span><h2>wbia.algo.verif.torch.gpu_util module<a class="headerlink" href="#module-wbia.algo.verif.torch.gpu_util" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="wbia.algo.verif.torch.gpu_util.find_unused_gpu">
+<code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.gpu_util.</span></code><code class="sig-name descname"><span class="pre">find_unused_gpu</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/gpu_util.html#find_unused_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.gpu_util.find_unused_gpu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds GPU with the lowest memory usage by parsing output of nvidia-smi</p>
+<p>python -c “from pysseg.util import gpu_util; print(gpu_util.find_unused_gpu())”</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wbia.algo.verif.torch.gpu_util.gpu_info">
+<code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.gpu_util.</span></code><code class="sig-name descname"><span class="pre">gpu_info</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/gpu_util.html#gpu_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.gpu_util.gpu_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses nvidia-smi</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wbia.algo.verif.torch.gpu_util.have_gpu">
+<code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.gpu_util.</span></code><code class="sig-name descname"><span class="pre">have_gpu</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/gpu_util.html#have_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.gpu_util.have_gpu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if we are on a machine with a good GPU</p>
+</dd></dl>
+
 </div>
-<div class="section" id="wbia-algo-verif-torch-lr-schedule-module">
-<h2>wbia.algo.verif.torch.lr_schedule module<a class="headerlink" href="#wbia-algo-verif-torch-lr-schedule-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wbia.algo.verif.torch.lr_schedule">
+<span id="wbia-algo-verif-torch-lr-schedule-module"></span><h2>wbia.algo.verif.torch.lr_schedule module<a class="headerlink" href="#module-wbia.algo.verif.torch.lr_schedule" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.lr_schedule.Exponential">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.lr_schedule.</span></code><code class="sig-name descname"><span class="pre">Exponential</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_decay_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/lr_schedule.html#Exponential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.lr_schedule.Exponential" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Decay learning rate by a factor of <cite>decay_rate</cite> every <cite>lr_decay_epoch</cite>
+epochs.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># DISABLE_DOCTEST</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">wbia.algo.verif.torch.lr_schedule</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lr_scheduler</span> <span class="o">=</span> <span class="n">Exponential</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">lr_scheduler</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1E-3</span><span class="p">,</span> <span class="mf">1E-3</span><span class="p">,</span> <span class="mf">1E-5</span><span class="p">,</span> <span class="mf">1E-5</span><span class="p">,</span> <span class="mf">1E-7</span><span class="p">,</span> <span class="mf">1E-7</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">rates</span><span class="p">)))</span>
+</pre></div>
 </div>
-<div class="section" id="wbia-algo-verif-torch-models-module">
-<h2>wbia.algo.verif.torch.models module<a class="headerlink" href="#wbia-algo-verif-torch-models-module" title="Permalink to this headline">¶</a></h2>
+</dd></dl>
+
 </div>
-<div class="section" id="wbia-algo-verif-torch-netmath-module">
-<h2>wbia.algo.verif.torch.netmath module<a class="headerlink" href="#wbia-algo-verif-torch-netmath-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wbia.algo.verif.torch.models">
+<span id="wbia-algo-verif-torch-models-module"></span><h2>wbia.algo.verif.torch.models module<a class="headerlink" href="#module-wbia.algo.verif.torch.models" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.models.Siamese">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.models.</span></code><code class="sig-name descname"><span class="pre">Siamese</span></code><a class="reference internal" href="_modules/wbia/algo/verif/torch/models.html#Siamese"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.models.Siamese" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># DISABLE_DOCTEST</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">wbia.algo.verif.siamese</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span> <span class="o">=</span> <span class="n">Siamese</span><span class="p">()</span>
+</pre></div>
 </div>
-<div class="section" id="wbia-algo-verif-torch-old-harness-module">
-<h2>wbia.algo.verif.torch.old_harness module<a class="headerlink" href="#wbia-algo-verif-torch-old-harness-module" title="Permalink to this headline">¶</a></h2>
+<dl class="py method">
+<dt id="wbia.algo.verif.torch.models.Siamese.forward">
+<code class="sig-name descname"><span class="pre">forward</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/models.html#Siamese.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.models.Siamese.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a resnet50 vector for each input and look at the L2 distance
+between the vectors.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wbia.algo.verif.torch.models.Siamese.training">
+<code class="sig-name descname"><span class="pre">training</span></code><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#wbia.algo.verif.torch.models.Siamese.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="wbia.algo.verif.torch.models.visualize">
+<code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.models.</span></code><code class="sig-name descname"><span class="pre">visualize</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/models.html#visualize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.models.visualize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="wbia-algo-verif-torch-siamese-module">
-<h2>wbia.algo.verif.torch.siamese module<a class="headerlink" href="#wbia-algo-verif-torch-siamese-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wbia.algo.verif.torch.netmath">
+<span id="wbia-algo-verif-torch-netmath-module"></span><h2>wbia.algo.verif.torch.netmath module<a class="headerlink" href="#module-wbia.algo.verif.torch.netmath" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.netmath.ContrastiveLoss">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.netmath.</span></code><code class="sig-name descname"><span class="pre">ContrastiveLoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#ContrastiveLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.ContrastiveLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Contrastive loss function.</p>
+<p class="rubric">References</p>
+<p><a class="reference external" href="https://github.com/delijati/pytorch-siamese/blob/master/contrastive.py">https://github.com/delijati/pytorch-siamese/blob/master/contrastive.py</a></p>
+<dl class="simple">
+<dt>LaTeX:</dt><dd><p>$(y E)^2 + ((1 - y) max(m - E, 0)^2)$</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># DISABLE_DOCTEST</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">wbia.algo.verif.siamese</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vecs1</span><span class="p">,</span> <span class="n">vecs2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">testdata_siam_desc</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span> <span class="o">=</span> <span class="n">ContrastiveLoss</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ut</span><span class="o">.</span><span class="n">exec_func_src</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">PairwiseDistance</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">)(</span><span class="n">vecs1</span><span class="p">,</span> <span class="n">vecs2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss2x</span><span class="p">,</span> <span class="n">dist_l2</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">exec_func_src</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="nb">globals</span><span class="p">(),</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss2x&#39;</span><span class="p">,</span> <span class="s1">&#39;dist_l2&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ut</span><span class="o">.</span><span class="n">quit_if_noshow</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss2x</span><span class="p">,</span> <span class="n">dist_l2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="p">[</span><span class="n">loss</span><span class="p">,</span> <span class="n">dist_l2</span><span class="p">,</span> <span class="n">label</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dist0_l2</span> <span class="o">=</span> <span class="n">dist_l2</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dist1_l2</span> <span class="o">=</span> <span class="n">dist_l2</span><span class="p">[</span><span class="o">~</span><span class="n">label</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss0</span> <span class="o">=</span> <span class="n">loss2x</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss1</span> <span class="o">=</span> <span class="n">loss2x</span><span class="p">[</span><span class="o">~</span><span class="n">label</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">wbia.plottool</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">plot2</span><span class="p">(</span><span class="n">dist0_l2</span><span class="p">,</span> <span class="n">loss0</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">TRUE_BLUE</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;imposter_loss&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">plot2</span><span class="p">(</span><span class="n">dist1_l2</span><span class="p">,</span> <span class="n">loss1</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">FALSE_RED</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;genuine_loss&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;l2-dist&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ut</span><span class="o">.</span><span class="n">show_if_requested</span><span class="p">()</span>
+</pre></div>
 </div>
-<div class="section" id="wbia-algo-verif-torch-train-main-module">
-<h2>wbia.algo.verif.torch.train_main module<a class="headerlink" href="#wbia-algo-verif-torch-train-main-module" title="Permalink to this headline">¶</a></h2>
+<dl class="py method">
+<dt id="wbia.algo.verif.torch.netmath.ContrastiveLoss.forward">
+<code class="sig-name descname"><span class="pre">forward</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#ContrastiveLoss.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.ContrastiveLoss.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wbia.algo.verif.torch.netmath.ContrastiveLoss.training">
+<code class="sig-name descname"><span class="pre">training</span></code><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#wbia.algo.verif.torch.netmath.ContrastiveLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.netmath.Criterions">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.netmath.</span></code><code class="sig-name descname"><span class="pre">Criterions</span></code><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#Criterions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Criterions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wbia.algo.verif.torch.netmath.NetMathParams" title="wbia.algo.verif.torch.netmath.NetMathParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">wbia.algo.verif.torch.netmath.NetMathParams</span></code></a></p>
+<p>A collection of standard and custom loss criterion</p>
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.netmath.Criterions.ContrastiveLoss">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">ContrastiveLoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Criterions.ContrastiveLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Contrastive loss function.</p>
+<p class="rubric">References</p>
+<p><a class="reference external" href="https://github.com/delijati/pytorch-siamese/blob/master/contrastive.py">https://github.com/delijati/pytorch-siamese/blob/master/contrastive.py</a></p>
+<dl class="simple">
+<dt>LaTeX:</dt><dd><p>$(y E)^2 + ((1 - y) max(m - E, 0)^2)$</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># DISABLE_DOCTEST</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">wbia.algo.verif.siamese</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vecs1</span><span class="p">,</span> <span class="n">vecs2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">testdata_siam_desc</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span> <span class="o">=</span> <span class="n">ContrastiveLoss</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ut</span><span class="o">.</span><span class="n">exec_func_src</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">PairwiseDistance</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">)(</span><span class="n">vecs1</span><span class="p">,</span> <span class="n">vecs2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss2x</span><span class="p">,</span> <span class="n">dist_l2</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">exec_func_src</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="nb">globals</span><span class="p">(),</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss2x&#39;</span><span class="p">,</span> <span class="s1">&#39;dist_l2&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ut</span><span class="o">.</span><span class="n">quit_if_noshow</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss2x</span><span class="p">,</span> <span class="n">dist_l2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="p">[</span><span class="n">loss</span><span class="p">,</span> <span class="n">dist_l2</span><span class="p">,</span> <span class="n">label</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dist0_l2</span> <span class="o">=</span> <span class="n">dist_l2</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dist1_l2</span> <span class="o">=</span> <span class="n">dist_l2</span><span class="p">[</span><span class="o">~</span><span class="n">label</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss0</span> <span class="o">=</span> <span class="n">loss2x</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss1</span> <span class="o">=</span> <span class="n">loss2x</span><span class="p">[</span><span class="o">~</span><span class="n">label</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">wbia.plottool</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">plot2</span><span class="p">(</span><span class="n">dist0_l2</span><span class="p">,</span> <span class="n">loss0</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">TRUE_BLUE</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;imposter_loss&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">plot2</span><span class="p">(</span><span class="n">dist1_l2</span><span class="p">,</span> <span class="n">loss1</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">FALSE_RED</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;genuine_loss&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;l2-dist&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ut</span><span class="o">.</span><span class="n">show_if_requested</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="wbia.algo.verif.torch.netmath.Criterions.ContrastiveLoss.forward">
+<code class="sig-name descname"><span class="pre">forward</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Criterions.ContrastiveLoss.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wbia.algo.verif.torch.netmath.Criterions.ContrastiveLoss.training">
+<code class="sig-name descname"><span class="pre">training</span></code><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Criterions.ContrastiveLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="wbia.algo.verif.torch.netmath.Criterions.cross_entropy2d">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">cross_entropy2d</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#Criterions.cross_entropy2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Criterions.cross_entropy2d" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://github.com/ycszen/pytorch-seg/blob/master/loss.py">https://github.com/ycszen/pytorch-seg/blob/master/loss.py</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.netmath.LRSchedules">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.netmath.</span></code><code class="sig-name descname"><span class="pre">LRSchedules</span></code><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#LRSchedules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.LRSchedules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wbia.algo.verif.torch.netmath.NetMathParams" title="wbia.algo.verif.torch.netmath.NetMathParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">wbia.algo.verif.torch.netmath.NetMathParams</span></code></a></p>
+<p>A collection of standard and custom learning rate schedulers</p>
+<dl class="py method">
+<dt id="wbia.algo.verif.torch.netmath.LRSchedules.exp">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">exp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_decay_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#LRSchedules.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.LRSchedules.exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decay learning rate by a factor of 0.1 every lr_decay_epoch epochs.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.netmath.Metrics">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.netmath.</span></code><code class="sig-name descname"><span class="pre">Metrics</span></code><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#Metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wbia.algo.verif.torch.netmath.NetMathParams" title="wbia.algo.verif.torch.netmath.NetMathParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">wbia.algo.verif.torch.netmath.NetMathParams</span></code></a></p>
+<dl class="py method">
+<dt id="wbia.algo.verif.torch.netmath.Metrics.tpr">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">tpr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#Metrics.tpr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Metrics.tpr" title="Permalink to this definition">¶</a></dt>
+<dd><p>true positive rate</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.netmath.NetMathParams">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.netmath.</span></code><code class="sig-name descname"><span class="pre">NetMathParams</span></code><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#NetMathParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.NetMathParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="wbia.algo.verif.torch.netmath.NetMathParams.lookup">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">lookup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_or_scheduler</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#NetMathParams.lookup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.NetMathParams.lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts either a string that encodes a known scheduler or a
+custom callable that is returned as-is.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key_or_scheduler</strong> (<em>str</em><em> or </em><em>func</em>) – scheduler name or the func itself</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.netmath.Optimizers">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.netmath.</span></code><code class="sig-name descname"><span class="pre">Optimizers</span></code><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#Optimizers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Optimizers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wbia.algo.verif.torch.netmath.NetMathParams" title="wbia.algo.verif.torch.netmath.NetMathParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">wbia.algo.verif.torch.netmath.NetMathParams</span></code></a></p>
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.netmath.Optimizers.Adam">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Adam</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">betas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.9,</span> <span class="pre">0.999)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amsgrad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Optimizers.Adam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.optim.optimizer.Optimizer</span></code></p>
+<p>Implements Adam algorithm.</p>
+<p>It has been proposed in <a class="reference external" href="https://arxiv.org/abs/1412.6980">Adam: A Method for Stochastic Optimization</a>.
+The implementation of the L2 penalty follows changes proposed in
+<a class="reference external" href="https://arxiv.org/abs/1711.05101">Decoupled Weight Decay Regularization</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>iterable</em>) – iterable of parameters to optimize or dicts defining
+parameter groups</p></li>
+<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate (default: 1e-3)</p></li>
+<li><p><strong>betas</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>optional</em>) – coefficients used for computing
+running averages of gradient and its square (default: (0.9, 0.999))</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – term added to the denominator to improve
+numerical stability (default: 1e-8)</p></li>
+<li><p><strong>weight_decay</strong> (<em>float</em><em>, </em><em>optional</em>) – weight decay (L2 penalty) (default: 0)</p></li>
+<li><p><strong>amsgrad</strong> (<em>boolean</em><em>, </em><em>optional</em>) – whether to use the AMSGrad variant of this
+algorithm from the paper <a class="reference external" href="https://openreview.net/forum?id=ryQu7f-RZ">On the Convergence of Adam and Beyond</a>
+(default: False)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="wbia.algo.verif.torch.netmath.Optimizers.Adam.step">
+<code class="sig-name descname"><span class="pre">step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">closure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Optimizers.Adam.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a single optimization step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>closure</strong> (<em>callable</em><em>, </em><em>optional</em>) – A closure that reevaluates the model
+and returns the loss.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.netmath.Optimizers.SGD">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">SGD</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">params</span></em>, <em class="sig-param"><span class="pre">lr=&lt;required</span> <span class="pre">parameter&gt;</span></em>, <em class="sig-param"><span class="pre">momentum=0</span></em>, <em class="sig-param"><span class="pre">dampening=0</span></em>, <em class="sig-param"><span class="pre">weight_decay=0</span></em>, <em class="sig-param"><span class="pre">nesterov=False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Optimizers.SGD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.optim.optimizer.Optimizer</span></code></p>
+<p>Implements stochastic gradient descent (optionally with momentum).</p>
+<p>Nesterov momentum is based on the formula from
+<a class="reference external" href="http://www.cs.toronto.edu/%7Ehinton/absps/momentum.pdf">On the importance of initialization and momentum in deep learning</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>iterable</em>) – iterable of parameters to optimize or dicts defining
+parameter groups</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – learning rate</p></li>
+<li><p><strong>momentum</strong> (<em>float</em><em>, </em><em>optional</em>) – momentum factor (default: 0)</p></li>
+<li><p><strong>weight_decay</strong> (<em>float</em><em>, </em><em>optional</em>) – weight decay (L2 penalty) (default: 0)</p></li>
+<li><p><strong>dampening</strong> (<em>float</em><em>, </em><em>optional</em>) – dampening for momentum (default: 0)</p></li>
+<li><p><strong>nesterov</strong> (<em>bool</em><em>, </em><em>optional</em>) – enables Nesterov momentum (default: False)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss_fn</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="nb">input</span><span class="p">),</span> <span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The implementation of SGD with Momentum/Nesterov subtly differs from
+Sutskever et. al. and implementations in some other frameworks.</p>
+<p>Considering the specific case of Momentum, the update can be written as</p>
+<div class="math">
+<p><span class="math">\begin{aligned}
+    v_{t+1} &amp; = \mu * v_{t} + g_{t+1}, \\
+    p_{t+1} &amp; = p_{t} - \text{lr} * v_{t+1},
+\end{aligned}</span></p>
+</div><p>where <span class="math">p</span>, <span class="math">g</span>, <span class="math">v</span> and <span class="math">\mu</span> denote the
+parameters, gradient, velocity, and momentum respectively.</p>
+<p>This is in contrast to Sutskever et. al. and
+other frameworks which employ an update of the form</p>
+<div class="math">
+<p><span class="math">\begin{aligned}
+    v_{t+1} &amp; = \mu * v_{t} + \text{lr} * g_{t+1}, \\
+    p_{t+1} &amp; = p_{t} - v_{t+1}.
+\end{aligned}</span></p>
+</div><p>The Nesterov version is analogously modified.</p>
+</div>
+<dl class="py method">
+<dt id="wbia.algo.verif.torch.netmath.Optimizers.SGD.step">
+<code class="sig-name descname"><span class="pre">step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">closure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wbia.algo.verif.torch.netmath.Optimizers.SGD.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a single optimization step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>closure</strong> (<em>callable</em><em>, </em><em>optional</em>) – A closure that reevaluates the model
+and returns the loss.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="wbia.algo.verif.torch.netmath.testdata_siam_desc">
+<code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.netmath.</span></code><code class="sig-name descname"><span class="pre">testdata_siam_desc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/netmath.html#testdata_siam_desc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.netmath.testdata_siam_desc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-wbia.algo.verif.torch.old_harness">
+<span id="wbia-algo-verif-torch-old-harness-module"></span><h2>wbia.algo.verif.torch.old_harness module<a class="headerlink" href="#module-wbia.algo.verif.torch.old_harness" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-wbia.algo.verif.torch.siamese">
+<span id="wbia-algo-verif-torch-siamese-module"></span><h2>wbia.algo.verif.torch.siamese module<a class="headerlink" href="#module-wbia.algo.verif.torch.siamese" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-wbia.algo.verif.torch.train_main">
+<span id="wbia-algo-verif-torch-train-main-module"></span><h2>wbia.algo.verif.torch.train_main module<a class="headerlink" href="#module-wbia.algo.verif.torch.train_main" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.train_main.LRSchedule">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.train_main.</span></code><code class="sig-name descname"><span class="pre">LRSchedule</span></code><a class="reference internal" href="_modules/wbia/algo/verif/torch/train_main.html#LRSchedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.train_main.LRSchedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="wbia.algo.verif.torch.train_main.LRSchedule.exp">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">exp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_decay_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/train_main.html#LRSchedule.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.train_main.LRSchedule.exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decay learning rate by a factor of 0.1 every lr_decay_epoch epochs.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wbia.algo.verif.torch.train_main.LabeledPairDataset">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.train_main.</span></code><code class="sig-name descname"><span class="pre">LabeledPairDataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img1_fpaths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img2_fpaths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/train_main.html#LabeledPairDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.train_main.LabeledPairDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.utils.data.dataset.T_co</span></code>]</p>
+<dl>
+<dt>transform=transforms.Compose([</dt><dd><blockquote>
+<div><p>transforms.Scale(224),
+transforms.ToTensor(),
+torchvision.transforms.Normalize([0.5, 0.5, 0.5], [0.225, 0.225, 0.225])</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+<dt>Ignore:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">wbia.algo.verif.torch.train_main</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">wbia.algo.verif.vsone</span> <span class="kn">import</span> <span class="o">*</span>  <span class="c1"># NOQA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pblm</span> <span class="o">=</span> <span class="n">OneVsOneProblem</span><span class="o">.</span><span class="n">from_empty</span><span class="p">(</span><span class="s1">&#39;PZ_MTEST&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ibs</span> <span class="o">=</span> <span class="n">pblm</span><span class="o">.</span><span class="n">infr</span><span class="o">.</span><span class="n">ibs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pblm</span><span class="o">.</span><span class="n">load_samples</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span> <span class="o">=</span> <span class="n">pblm</span><span class="o">.</span><span class="n">samples</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span><span class="o">.</span><span class="n">print_info</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xval_kw</span> <span class="o">=</span> <span class="n">pblm</span><span class="o">.</span><span class="n">xval_kw</span><span class="o">.</span><span class="n">asdict</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">skf_list</span> <span class="o">=</span> <span class="n">pblm</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">stratified_kfold_indices</span><span class="p">(</span><span class="o">**</span><span class="n">xval_kw</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span> <span class="o">=</span> <span class="n">skf_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aids1</span><span class="p">,</span> <span class="n">aids2</span> <span class="o">=</span> <span class="n">pblm</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">aid_pairs</span><span class="p">[</span><span class="n">train_idx</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">pblm</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;match_state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_enc</span><span class="p">[</span><span class="n">train_idx</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chip_config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;resize_dim&#39;</span><span class="p">:</span> <span class="s1">&#39;wh&#39;</span><span class="p">,</span> <span class="s1">&#39;dim_size&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img1_fpaths</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">depc_annot</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;chips&#39;</span><span class="p">,</span> <span class="n">aids1</span><span class="p">,</span> <span class="n">read_extern</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">colnames</span><span class="o">=</span><span class="s1">&#39;img&#39;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">chip_config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img2_fpaths</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">depc_annot</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;chips&#39;</span><span class="p">,</span> <span class="n">aids2</span><span class="p">,</span> <span class="n">read_extern</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">colnames</span><span class="o">=</span><span class="s1">&#39;img&#39;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">chip_config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span> <span class="o">=</span> <span class="n">LabeledPairDataset</span><span class="p">(</span><span class="n">img1_fpaths</span><span class="p">,</span> <span class="n">img2_fpaths</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img1</span><span class="p">,</span> <span class="n">img2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="wbia.algo.verif.torch.train_main.LabeledPairDataset.class_weights">
+<code class="sig-name descname"><span class="pre">class_weights</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/train_main.html#LabeledPairDataset.class_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.train_main.LabeledPairDataset.class_weights" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="wbia.algo.verif.torch.train_main.siam_vsone_train">
+<code class="sig-prename descclassname"><span class="pre">wbia.algo.verif.torch.train_main.</span></code><code class="sig-name descname"><span class="pre">siam_vsone_train</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/algo/verif/torch/train_main.html#siam_vsone_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.algo.verif.torch.train_main.siam_vsone_train" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>CommandLine:</dt><dd><p>python -m wbia.algo.verif.torch.train_main siam_vsone_train</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># DISABLE_DOCTEST</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">wbia.algo.verif.torch.train_main</span> <span class="kn">import</span> <span class="o">*</span>  <span class="c1"># NOQA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">siam_vsone_train</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-wbia.algo.verif.torch">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-wbia.algo.verif.torch" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -101,23 +514,23 @@
 <li class="toctree-l2"><a class="reference internal" href="wbia.templates.html">wbia.templates package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="wbia.viz.html">wbia.viz package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="wbia.web.html">wbia.web package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-main">wbia.__main__</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-devcmds-wbia">wbia._devcmds_wbia</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-devscript">wbia._devscript</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-wbia-object">wbia._wbia_object</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-annotmatch-funcs">wbia.annotmatch_funcs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-annots">wbia.annots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-constants">wbia.constants</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-core-annots">wbia.core_annots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-core-images">wbia.core_images</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-core-parts">wbia.core_parts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-demodata">wbia.demodata</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-dev">wbia.dev</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-filter-configs">wbia.filter_configs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-images">wbia.images</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-params">wbia.params</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#wbia-tag-funcs">wbia.tag_funcs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-contents">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.__main__">wbia.__main__</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia._devcmds_wbia">wbia._devcmds_wbia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia._devscript">wbia._devscript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia._wbia_object">wbia._wbia_object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.annotmatch_funcs">wbia.annotmatch_funcs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.annots">wbia.annots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.constants">wbia.constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.core_annots">wbia.core_annots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.core_images">wbia.core_images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.core_parts">wbia.core_parts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.demodata">wbia.demodata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.dev">wbia.dev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.filter_configs">wbia.filter_configs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.images">wbia.images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.params">wbia.params</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia.tag_funcs">wbia.tag_funcs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-wbia">Module contents</a></li>
 </ul>
 </li>
 </ul>
