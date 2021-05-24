@@ -6,9 +6,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>wbia.web.routes &#8212; Wildbook Image Analysis (IA)  documentation</title>
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -2058,7 +2058,7 @@
         <span class="n">nid_list</span> <span class="o">=</span> <span class="p">[</span>
             <span class="kc">None</span> <span class="k">if</span> <span class="n">nid_</span> <span class="o">==</span> <span class="s1">&#39;None&#39;</span> <span class="ow">or</span> <span class="n">nid_</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">nid_</span><span class="p">)</span> <span class="k">for</span> <span class="n">nid_</span> <span class="ow">in</span> <span class="n">nid_list</span>
         <span class="p">]</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">aid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">aid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">aid_list</span> <span class="o">=</span> <span class="n">aid</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
         <span class="n">aid_list</span> <span class="o">=</span> <span class="p">[</span>
             <span class="kc">None</span> <span class="k">if</span> <span class="n">aid_</span> <span class="o">==</span> <span class="s1">&#39;None&#39;</span> <span class="ow">or</span> <span class="n">aid_</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">aid_</span><span class="p">)</span> <span class="k">for</span> <span class="n">aid_</span> <span class="ow">in</span> <span class="n">aid_list</span>
@@ -4591,7 +4591,13 @@
 
 <div class="viewcode-block" id="review_identification_graph_refer"><a class="viewcode-back" href="../../../wbia.web.html#wbia.web.routes.review_identification_graph_refer">[docs]</a><span class="nd">@register_route</span><span class="p">(</span><span class="s1">&#39;/review/identification/graph/refer/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">review_identification_graph_refer</span><span class="p">(</span>
-    <span class="n">imgsetid</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="mi">2019</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="n">imgsetid</span><span class="p">,</span>
+    <span class="n">species</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">tier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">year</span><span class="o">=</span><span class="mi">2019</span><span class="p">,</span>
+    <span class="n">option</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;graph_algorithm&#39;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="n">ibs</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">ibs</span>
 
@@ -4616,6 +4622,7 @@
             <span class="n">annot_uuid_list</span><span class="o">=</span><span class="n">annot_uuid_list</span><span class="p">,</span>
             <span class="n">hogwild_species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span>
             <span class="n">creation_imageset_rowid_list</span><span class="o">=</span><span class="p">[</span><span class="n">imgsetid</span><span class="p">],</span>
+            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
             <span class="n">kaia</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">ibs</span><span class="o">.</span><span class="n">dbname</span> <span class="o">==</span> <span class="s1">&#39;NG_Feasability&#39;</span> <span class="ow">or</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nassau&#39;</span><span class="p">]:</span>
@@ -4659,6 +4666,7 @@
             <span class="n">annot_uuid_list</span><span class="o">=</span><span class="n">annot_uuid_list</span><span class="p">,</span>
             <span class="n">hogwild_species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span>
             <span class="n">creation_imageset_rowid_list</span><span class="o">=</span><span class="p">[</span><span class="n">imgsetid</span><span class="p">],</span>
+            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">ibs</span><span class="o">.</span><span class="n">dbname</span> <span class="o">==</span> <span class="s1">&#39;SSKUNK_Master&#39;</span> <span class="ow">or</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;skunk&#39;</span><span class="p">]:</span>
         <span class="n">species</span> <span class="o">=</span> <span class="s1">&#39;skunk_spotted&#39;</span>
@@ -4699,6 +4707,7 @@
             <span class="n">annot_uuid_list</span><span class="o">=</span><span class="n">annot_uuid_list</span><span class="p">,</span>
             <span class="n">hogwild_species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span>
             <span class="n">creation_imageset_rowid_list</span><span class="o">=</span><span class="p">[</span><span class="n">imgsetid</span><span class="p">],</span>
+            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;census&#39;</span><span class="p">]:</span>
         <span class="n">imgsetid_</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_imageset_imgsetids_from_text</span><span class="p">(</span><span class="s1">&#39;*All Images&#39;</span><span class="p">)</span>
@@ -4824,6 +4833,7 @@
             <span class="n">annot_uuid_list</span><span class="o">=</span><span class="n">annot_uuid_list</span><span class="p">,</span>
             <span class="n">hogwild_species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span>
             <span class="n">creation_imageset_rowid_list</span><span class="o">=</span><span class="p">[</span><span class="n">imgsetid</span><span class="p">],</span>
+            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
             <span class="n">census</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;rosemary&#39;</span><span class="p">]:</span>
@@ -4845,6 +4855,7 @@
             <span class="n">annot_uuid_list</span><span class="o">=</span><span class="n">annot_uuid_list</span><span class="p">,</span>
             <span class="n">hogwild_species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span>
             <span class="n">creation_imageset_rowid_list</span><span class="o">=</span><span class="p">[</span><span class="n">imgsetid</span><span class="p">],</span>
+            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">ibs</span><span class="o">.</span><span class="n">dbname</span> <span class="o">==</span> <span class="s1">&#39;WD_Master&#39;</span> <span class="ow">or</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;wilddog&#39;</span><span class="p">]:</span>
         <span class="n">imgsetid</span> <span class="o">=</span> <span class="mi">1</span>
@@ -4879,6 +4890,7 @@
             <span class="n">annot_uuid_list</span><span class="o">=</span><span class="n">annot_uuid_list</span><span class="p">,</span>
             <span class="n">hogwild_species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span>
             <span class="n">creation_imageset_rowid_list</span><span class="o">=</span><span class="p">[</span><span class="n">imgsetid</span><span class="p">],</span>
+            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">aid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_imageset_aids</span><span class="p">(</span><span class="n">imgsetid</span><span class="p">)</span>
@@ -4892,10 +4904,12 @@
             <span class="s1">&#39;threshold&#39;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>
             <span class="s1">&#39;enable_canonical&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">review_identification_graph</span><span class="p">(</span>
             <span class="n">annot_uuid_list</span><span class="o">=</span><span class="n">annot_uuid_list</span><span class="p">,</span>
             <span class="n">hogwild_species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span>
             <span class="n">creation_imageset_rowid_list</span><span class="o">=</span><span class="p">[</span><span class="n">imgsetid</span><span class="p">],</span>
+            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
             <span class="o">**</span><span class="n">config</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -4964,6 +4978,7 @@
     <span class="n">creation_imageset_rowid_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">kaia</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">census</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;graph_algorithm&#39;</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -5160,6 +5175,7 @@
                 <span class="n">annot_uuid_list</span><span class="o">=</span><span class="n">annot_uuid_list</span><span class="p">,</span>
                 <span class="n">query_config_dict</span><span class="o">=</span><span class="n">query_config_dict</span><span class="p">,</span>
                 <span class="n">creation_imageset_rowid_list</span><span class="o">=</span><span class="n">creation_imageset_rowid_list</span><span class="p">,</span>
+                <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
             <span class="p">)</span>
 
@@ -5294,7 +5310,9 @@
 
         <span class="n">review_rowid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">_get_all_review_rowids</span><span class="p">()</span>
         <span class="n">identity_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_review_identity</span><span class="p">(</span><span class="n">review_rowid_list</span><span class="p">)</span>
-        <span class="n">num_auto</span> <span class="o">=</span> <span class="n">identity_list</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;algo:auto_clf&#39;</span><span class="p">)</span>
+        <span class="n">num_auto</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+            <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">identity</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;algo:&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">identity</span> <span class="ow">in</span> <span class="n">identity_list</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">num_manual</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">review_rowid_list</span><span class="p">)</span> <span class="o">-</span> <span class="n">num_auto</span>
         <span class="n">match_data</span><span class="p">[</span><span class="s1">&#39;Reviews&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;Auto&#39;</span><span class="p">:</span> <span class="n">num_auto</span><span class="p">,</span>
@@ -5979,7 +5997,7 @@
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

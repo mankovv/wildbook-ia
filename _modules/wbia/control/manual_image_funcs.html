@@ -6,9 +6,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>wbia.control.manual_image_funcs &#8212; Wildbook Image Analysis (IA)  documentation</title>
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -326,7 +326,7 @@
 <div class="viewcode-block" id="compute_image_uuids"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.manual_image_funcs.compute_image_uuids">[docs]</a><span class="nd">@register_ibs_method</span>
 <span class="nd">@register_api</span><span class="p">(</span><span class="s1">&#39;/api/image/uuid/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">compute_image_uuids</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gpath_list</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">params_list</span> <span class="o">=</span> <span class="n">_compute_image_uuids</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gpath_list</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">params_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">_compute_image_uuids</span><span class="p">(</span><span class="n">gpath_list</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="n">uuid_colx</span> <span class="o">=</span> <span class="n">IMAGE_COLNAMES</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;image_uuid&#39;</span><span class="p">)</span>
     <span class="n">uuid_list</span> <span class="o">=</span> <span class="p">[</span>
@@ -544,6 +544,7 @@
 <span class="sd">        &gt;&gt;&gt; # ENABLE_DOCTEST</span>
 <span class="sd">        &gt;&gt;&gt; from wbia.control.manual_image_funcs import *  # NOQA</span>
 <span class="sd">        &gt;&gt;&gt; import wbia</span>
+<span class="sd">        &gt;&gt;&gt; import os</span>
 <span class="sd">        &gt;&gt;&gt; # build test data</span>
 <span class="sd">        &gt;&gt;&gt; ibs = wbia.opendb(&#39;testdb1&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; gpath_list  = [ut.unixpath(ut.grab_test_imgpath(&#39;carl.jpg&#39;))]</span>
@@ -559,10 +560,10 @@
 <span class="sd">        &gt;&gt;&gt; result = rel_gpath3</span>
 <span class="sd">        &gt;&gt;&gt; print(result)</span>
 <span class="sd">        &gt;&gt;&gt; # Clean things up</span>
+<span class="sd">        &gt;&gt;&gt; paths = ibs.get_image_paths(gid_list_)</span>
 <span class="sd">        &gt;&gt;&gt; ibs.delete_images(gid_list_)</span>
-<span class="sd">        ...</span>
-<span class="sd">        testdb1/_ibsdb/images/f498fa6f-6b24-b4fa-7932-2612144fedd5.jpg</span>
-<span class="sd">        ...</span>
+<span class="sd">        &gt;&gt;&gt; for path in paths:</span>
+<span class="sd">        &gt;&gt;&gt;     assert not os.path.exists(path)</span>
 
 <span class="sd">    Ignore:</span>
 <span class="sd">        ibs.vd()</span>
@@ -1074,8 +1075,7 @@
 
 <span class="nd">@register_ibs_method</span>
 <span class="nd">@accessor_decors</span><span class="o">.</span><span class="n">setter</span>
-<span class="nd">@register_api</span><span class="p">(</span><span class="s1">&#39;/api/image/orientation/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">_set_image_orientation</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">orientation_list</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_set_image_orientation</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">orientation_list</span><span class="p">,</span> <span class="n">clean_derivatives</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    RESTful:</span>
 <span class="sd">        Method: PUT</span>
@@ -1085,8 +1085,68 @@
     <span class="n">val_list</span> <span class="o">=</span> <span class="p">((</span><span class="n">orientation</span><span class="p">,)</span> <span class="k">for</span> <span class="n">orientation</span> <span class="ow">in</span> <span class="n">orientation_list</span><span class="p">)</span>
     <span class="n">id_iter</span> <span class="o">=</span> <span class="p">((</span><span class="n">gid</span><span class="p">,)</span> <span class="k">for</span> <span class="n">gid</span> <span class="ow">in</span> <span class="n">gid_list</span><span class="p">)</span>
     <span class="n">ibs</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">const</span><span class="o">.</span><span class="n">IMAGE_TABLE</span><span class="p">,</span> <span class="n">colnames</span><span class="p">,</span> <span class="n">val_list</span><span class="p">,</span> <span class="n">id_iter</span><span class="p">)</span>
-    <span class="n">ibs</span><span class="o">.</span><span class="n">depc_image</span><span class="o">.</span><span class="n">notify_root_changed</span><span class="p">(</span><span class="n">gid_list</span><span class="p">,</span> <span class="s1">&#39;image_orientation&#39;</span><span class="p">)</span>
-    <span class="n">ibs</span><span class="o">.</span><span class="n">delete_image_thumbs</span><span class="p">(</span><span class="n">gid_list</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">clean_derivatives</span><span class="p">:</span>
+        <span class="c1"># Delete image&#39;s thumbs</span>
+        <span class="n">ibs</span><span class="o">.</span><span class="n">depc_image</span><span class="o">.</span><span class="n">notify_root_changed</span><span class="p">(</span><span class="n">gid_list</span><span class="p">,</span> <span class="s1">&#39;image_orientation&#39;</span><span class="p">)</span>
+        <span class="n">ibs</span><span class="o">.</span><span class="n">delete_image_thumbs</span><span class="p">(</span><span class="n">gid_list</span><span class="p">)</span>
+
+        <span class="c1"># Delete annotation&#39;s thumbs</span>
+        <span class="n">aid_list</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">ibs</span><span class="o">.</span><span class="n">get_image_aids</span><span class="p">(</span><span class="n">gid_list</span><span class="p">))</span>
+        <span class="n">ibs</span><span class="o">.</span><span class="n">delete_annot_chips</span><span class="p">(</span><span class="n">aid_list</span><span class="p">)</span>
+        <span class="n">ibs</span><span class="o">.</span><span class="n">delete_annot_imgthumbs</span><span class="p">(</span><span class="n">aid_list</span><span class="p">)</span>
+        <span class="n">gid_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ibs</span><span class="o">.</span><span class="n">get_annot_gids</span><span class="p">(</span><span class="n">aid_list</span><span class="p">)))</span>
+        <span class="n">config2_</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;thumbsize&#39;</span><span class="p">:</span> <span class="mi">221</span><span class="p">}</span>
+        <span class="n">ibs</span><span class="o">.</span><span class="n">delete_image_thumbs</span><span class="p">(</span><span class="n">gid_list</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">config2_</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="set_image_orientation"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.manual_image_funcs.set_image_orientation">[docs]</a><span class="nd">@register_ibs_method</span>
+<span class="nd">@accessor_decors</span><span class="o">.</span><span class="n">setter</span>
+<span class="nd">@register_api</span><span class="p">(</span><span class="s1">&#39;/api/image/orientation/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">set_image_orientation</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">orientation_list</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    RESTful:</span>
+<span class="sd">        Method: PUT</span>
+<span class="sd">        URL:    /api/image/orientation/</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">vtool.exif</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">ORIENTATION_DICT_INVERSE</span><span class="p">,</span>
+        <span class="n">ORIENTATION_UNDEFINED</span><span class="p">,</span>
+        <span class="n">ORIENTATION_000</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">undefined</span> <span class="o">=</span> <span class="n">ORIENTATION_DICT_INVERSE</span><span class="p">[</span><span class="n">ORIENTATION_UNDEFINED</span><span class="p">]</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">ORIENTATION_DICT_INVERSE</span><span class="p">[</span><span class="n">ORIENTATION_000</span><span class="p">]</span>
+    <span class="n">existing_orientation_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_image_orientation</span><span class="p">(</span><span class="n">gid_list</span><span class="p">)</span>
+    <span class="n">existing_orientation_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">normal</span> <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">undefined</span> <span class="k">else</span> <span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">existing_orientation_list</span>
+    <span class="p">]</span>
+
+    <span class="n">path_funcs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_180</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_right_90</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_left_90</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_180</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_left_90</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_right_90</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_left_90</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_right_90</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_180</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_right_90</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_left_90</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span> <span class="n">ibs</span><span class="o">.</span><span class="n">update_image_rotate_180</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">gid</span><span class="p">,</span> <span class="n">existing_orientation</span><span class="p">,</span> <span class="n">orientation</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+        <span class="n">gid_list</span><span class="p">,</span> <span class="n">existing_orientation_list</span><span class="p">,</span> <span class="n">orientation_list</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">undefined</span><span class="p">:</span>
+            <span class="n">orientation</span> <span class="o">=</span> <span class="n">normal</span>
+        <span class="k">if</span> <span class="n">existing_orientation</span> <span class="o">==</span> <span class="n">orientation</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="p">(</span><span class="n">existing_orientation</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
+        <span class="n">path_func</span> <span class="o">=</span> <span class="n">path_funcs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">path_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Could not find path </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">path</span><span class="p">,)</span>
+        <span class="n">path_func</span><span class="p">([</span><span class="n">gid</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="update_image_rotate_90"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.manual_image_funcs.update_image_rotate_90">[docs]</a><span class="k">def</span> <span class="nf">update_image_rotate_90</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
@@ -1206,7 +1266,7 @@
 
 <div class="viewcode-block" id="get_images"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.manual_image_funcs.get_images">[docs]</a><span class="nd">@register_ibs_method</span>
 <span class="nd">@accessor_decors</span><span class="o">.</span><span class="n">getter_1to1</span>
-<span class="k">def</span> <span class="nf">get_images</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">force_orient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_images</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">ignore_orient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        list_ (list): a list of images in numpy matrix form by gid</span>
@@ -1236,7 +1296,7 @@
 <span class="sd">        (715, 1047, 3)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">orient_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_image_orientation</span><span class="p">(</span><span class="n">gid_list</span><span class="p">)</span>
-    <span class="n">orient_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">orient</span> <span class="k">if</span> <span class="n">force_orient</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">orient</span> <span class="ow">in</span> <span class="n">orient_list</span><span class="p">]</span>
+    <span class="n">orient_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span> <span class="k">if</span> <span class="n">ignore_orient</span> <span class="k">else</span> <span class="n">orient</span> <span class="k">for</span> <span class="n">orient</span> <span class="ow">in</span> <span class="n">orient_list</span><span class="p">]</span>
     <span class="n">gpath_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_image_paths</span><span class="p">(</span><span class="n">gid_list</span><span class="p">)</span>
     <span class="n">zipped</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gpath_list</span><span class="p">,</span> <span class="n">orient_list</span><span class="p">)</span>
     <span class="n">image_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">vt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">gpath</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">orient</span><span class="p">)</span> <span class="k">for</span> <span class="n">gpath</span><span class="p">,</span> <span class="n">orient</span> <span class="ow">in</span> <span class="n">zipped</span><span class="p">]</span>
@@ -1245,9 +1305,9 @@
 
 <div class="viewcode-block" id="get_image_imgdata"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.manual_image_funcs.get_image_imgdata">[docs]</a><span class="nd">@register_ibs_method</span>
 <span class="nd">@accessor_decors</span><span class="o">.</span><span class="n">getter_1to1</span>
-<span class="k">def</span> <span class="nf">get_image_imgdata</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">force_orient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_image_imgdata</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">ignore_orient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; alias for get_images with standardized name &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">get_images</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">force_orient</span><span class="o">=</span><span class="n">force_orient</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">get_images</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">ignore_orient</span><span class="o">=</span><span class="n">ignore_orient</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_image_thumbtup"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.manual_image_funcs.get_image_thumbtup">[docs]</a><span class="nd">@register_ibs_method</span>
@@ -1630,13 +1690,13 @@
 <span class="sd">        &gt;&gt;&gt; image_path = ibs.get_image_paths(gid_list)</span>
 <span class="sd">        &gt;&gt;&gt; print(&#39;Hashing: %r&#39; % (image_path, ))</span>
 <span class="sd">        &gt;&gt;&gt; hash_list = ibs.get_image_hash(gid_list, algo=&#39;md5&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; assert hash_list == [&#39;fb5da58f9f49676dbb513a775be6b942&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; assert hash_list[0] in [&#39;56498e54b5ebbcbbcff60c91a135e8a3&#39;, &#39;ab31dc5e1355247a0ea5ec940802a468&#39;], &#39;Found %r&#39; % (hash_list, )</span>
 <span class="sd">        &gt;&gt;&gt; hash_list = ibs.get_image_hash(gid_list, algo=&#39;sha1&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; assert hash_list == [&#39;f716b40e17cb2d7850def23f7d720ca28b147b62&#39;], hash_list</span>
+<span class="sd">        &gt;&gt;&gt; assert hash_list[0] in [&#39;277e8dac1e5929c097f3fcbca2c77d92e1401d5f&#39;, &#39;66ec193a1619b3b6216d1784b4833b6194b13384&#39;], &#39;Found %r&#39; % (hash_list, )</span>
 <span class="sd">        &gt;&gt;&gt; hash_list = ibs.get_image_hash(gid_list, algo=&#39;sha256&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; assert hash_list == [&#39;24c6cb43f5301222a6a7f19ac1e0c578e16aa5c844561a8b2c16b2a478921f08&#39;], hash_list</span>
+<span class="sd">        &gt;&gt;&gt; assert hash_list[0] in [&#39;ca03a0d7427c3d2f02e62e157e8d8ea5b7284be67ca67fc391a5747368d3ab0e&#39;, &#39;fd09d22ec18c32d9db2cd026a9511ab228aadf0e5f7271760413448ddd16d483&#39;], &#39;Found %r&#39; % (hash_list, )</span>
 <span class="sd">        &gt;&gt;&gt; hash_list = ibs.get_image_hash(gid_list, algo=&#39;sha512&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; assert hash_list == [&#39;bbde99d7e376339905bac68a8375d00208f68344a9ca41dd02a22d6dc426dfe6bace43a41dfe49e474a5fe335f09001c0fdd3350d5b8978f5fc5cc615d3cbbed&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; assert hash_list[0] in [&#39;7b43dbc709a8cf903170b414f48a0bb7b569b703d9393c20a2cff95c42fd252ed2098bc56cba8eed393bcdf3388e55eee917908c6b0d1b4bc78cf76b1e918d99&#39;, &#39;81d1d8ee4c8640b9aad26e4cc03536ed30a43b69e166748ec940a8f00e4776be93f4ac6367a06d92b772a9a60dc104c6f999e7197c2584fdc4cffcac2da71506&#39;], &#39;Found %r&#39; % (hash_list, )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">hashlib</span>
 
@@ -2249,7 +2309,7 @@
 <span class="nd">@accessor_decors</span><span class="o">.</span><span class="n">getter_1toM</span>
 <span class="nd">@accessor_decors</span><span class="o">.</span><span class="n">cache_getter</span><span class="p">(</span><span class="n">const</span><span class="o">.</span><span class="n">IMAGE_TABLE</span><span class="p">,</span> <span class="n">ANNOT_ROWIDS</span><span class="p">)</span>
 <span class="nd">@register_api</span><span class="p">(</span><span class="s1">&#39;/api/image/annot/rowid/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">get_image_aids</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">is_staged</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">__check_staged__</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_image_aids</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">is_staged</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        list_ (list): a list of aids for each image by gid</span>
@@ -2311,7 +2371,7 @@
             <span class="p">)</span>
 
         <span class="c1"># The index maxes the following query very efficient</span>
-        <span class="k">if</span> <span class="n">__check_staged__</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_staged</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params_iter</span> <span class="o">=</span> <span class="p">((</span><span class="n">gid</span><span class="p">,</span> <span class="n">is_staged</span><span class="p">)</span> <span class="k">for</span> <span class="n">gid</span> <span class="ow">in</span> <span class="n">gid_list</span><span class="p">)</span>
             <span class="n">where_colnames</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">IMAGE_ROWID</span><span class="p">,</span>
@@ -2996,7 +3056,7 @@
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>wbia.templates package &#8212; Wildbook Image Analysis (IA)  documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -32,12 +33,12 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="wbia-templates-package">
+  <section id="wbia-templates-package">
 <h1>wbia.templates package<a class="headerlink" href="#wbia-templates-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
+<section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-wbia.templates.generate_notebook">
+</section>
+<section id="module-wbia.templates.generate_notebook">
 <span id="wbia-templates-generate-notebook-module"></span><h2>wbia.templates.generate_notebook module<a class="headerlink" href="#module-wbia.templates.generate_notebook" title="Permalink to this headline">¶</a></h2>
 <dl>
 <dt>CommandLine:</dt><dd><p># Generate and start an IPython notebook
@@ -66,8 +67,8 @@ c.NotebookApp.ip = ‘*’</p>
 </dd>
 </dl>
 <dl class="py function">
-<dt id="wbia.templates.generate_notebook.autogen_ipynb">
-<code class="sig-prename descclassname"><span class="pre">wbia.templates.generate_notebook.</span></code><code class="sig-name descname"><span class="pre">autogen_ipynb</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ibs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">launch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/generate_notebook.html#autogen_ipynb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.generate_notebook.autogen_ipynb" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wbia.templates.generate_notebook.autogen_ipynb">
+<span class="sig-prename descclassname"><span class="pre">wbia.templates.generate_notebook.</span></span><span class="sig-name descname"><span class="pre">autogen_ipynb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ibs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">launch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/generate_notebook.html#autogen_ipynb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.generate_notebook.autogen_ipynb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Autogenerates standard IBEIS Image Analysis IPython notebooks.</p>
 <dl>
 <dt>CommandLine:</dt><dd><p>python -m wbia autogen_ipynb –run –db lynx
@@ -110,19 +111,19 @@ python -m wbia autogen_ipynb –db PW_Master –ipynb -t default:proot=CurvRankD
 </dd></dl>
 
 <dl class="py function">
-<dt id="wbia.templates.generate_notebook.get_default_cell_template_list">
-<code class="sig-prename descclassname"><span class="pre">wbia.templates.generate_notebook.</span></code><code class="sig-name descname"><span class="pre">get_default_cell_template_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ibs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/generate_notebook.html#get_default_cell_template_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.generate_notebook.get_default_cell_template_list" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wbia.templates.generate_notebook.get_default_cell_template_list">
+<span class="sig-prename descclassname"><span class="pre">wbia.templates.generate_notebook.</span></span><span class="sig-name descname"><span class="pre">get_default_cell_template_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ibs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/generate_notebook.html#get_default_cell_template_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.generate_notebook.get_default_cell_template_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the order of ipython notebook cells</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="wbia.templates.generate_notebook.make_wbia_cell_list">
-<code class="sig-prename descclassname"><span class="pre">wbia.templates.generate_notebook.</span></code><code class="sig-name descname"><span class="pre">make_wbia_cell_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ibs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/generate_notebook.html#make_wbia_cell_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.generate_notebook.make_wbia_cell_list" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wbia.templates.generate_notebook.make_wbia_cell_list">
+<span class="sig-prename descclassname"><span class="pre">wbia.templates.generate_notebook.</span></span><span class="sig-name descname"><span class="pre">make_wbia_cell_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ibs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/generate_notebook.html#make_wbia_cell_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.generate_notebook.make_wbia_cell_list" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="wbia.templates.generate_notebook.make_wbia_notebook">
-<code class="sig-prename descclassname"><span class="pre">wbia.templates.generate_notebook.</span></code><code class="sig-name descname"><span class="pre">make_wbia_notebook</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ibs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/generate_notebook.html#make_wbia_notebook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.generate_notebook.make_wbia_notebook" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wbia.templates.generate_notebook.make_wbia_notebook">
+<span class="sig-prename descclassname"><span class="pre">wbia.templates.generate_notebook.</span></span><span class="sig-name descname"><span class="pre">make_wbia_notebook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ibs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/generate_notebook.html#make_wbia_notebook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.generate_notebook.make_wbia_notebook" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>ibs</strong> (<em>wbia.IBEISController</em>) – wbia controller object</p>
@@ -150,16 +151,16 @@ python -c “import runipy; print(runipy.__version__)”</p>
 </div>
 </dd></dl>
 
-</div>
-<div class="section" id="module-wbia.templates.notebook_cells">
+</section>
+<section id="module-wbia.templates.notebook_cells">
 <span id="wbia-templates-notebook-cells-module"></span><h2>wbia.templates.notebook_cells module<a class="headerlink" href="#module-wbia.templates.notebook_cells" title="Permalink to this headline">¶</a></h2>
 <dl class="simple">
 <dt>ComamndLine:</dt><dd><p>python -m wbia –tf autogen_ipynb –ipynb –db PZ_MTEST –ipynb</p>
 </dd>
 </dl>
 <dl class="py function">
-<dt id="wbia.templates.notebook_cells.dataset_summary_stats_hacktest">
-<code class="sig-prename descclassname"><span class="pre">wbia.templates.notebook_cells.</span></code><code class="sig-name descname"><span class="pre">dataset_summary_stats_hacktest</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/notebook_cells.html#dataset_summary_stats_hacktest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.notebook_cells.dataset_summary_stats_hacktest" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wbia.templates.notebook_cells.dataset_summary_stats_hacktest">
+<span class="sig-prename descclassname"><span class="pre">wbia.templates.notebook_cells.</span></span><span class="sig-name descname"><span class="pre">dataset_summary_stats_hacktest</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/notebook_cells.html#dataset_summary_stats_hacktest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.notebook_cells.dataset_summary_stats_hacktest" title="Permalink to this definition">¶</a></dt>
 <dd><p>import wbia
 ibs = wbia.opendb(‘WWF_Lynx_Copy’)
 # import wbia
@@ -186,50 +187,50 @@ print(ut.repr2(ibs.get_annot_stats_dict(expt_aids, strkeys=True, nl=2, use_hist=
 # print(ut.repr2(ibs.get_annot_stats_dict(expt_qaids, strkeys=True, nl=2, use_hist=True)))</p>
 </dd></dl>
 
-</div>
-<div class="section" id="module-wbia.templates.notebook_helpers">
+</section>
+<section id="module-wbia.templates.notebook_helpers">
 <span id="wbia-templates-notebook-helpers-module"></span><h2>wbia.templates.notebook_helpers module<a class="headerlink" href="#module-wbia.templates.notebook_helpers" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="wbia.templates.notebook_helpers.custom_globals">
-<code class="sig-prename descclassname"><span class="pre">wbia.templates.notebook_helpers.</span></code><code class="sig-name descname"><span class="pre">custom_globals</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/notebook_helpers.html#custom_globals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.notebook_helpers.custom_globals" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wbia.templates.notebook_helpers.custom_globals">
+<span class="sig-prename descclassname"><span class="pre">wbia.templates.notebook_helpers.</span></span><span class="sig-name descname"><span class="pre">custom_globals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/notebook_helpers.html#custom_globals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.notebook_helpers.custom_globals" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="wbia.templates.notebook_helpers.make_cells_wider">
-<code class="sig-prename descclassname"><span class="pre">wbia.templates.notebook_helpers.</span></code><code class="sig-name descname"><span class="pre">make_cells_wider</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/notebook_helpers.html#make_cells_wider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.notebook_helpers.make_cells_wider" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wbia.templates.notebook_helpers.make_cells_wider">
+<span class="sig-prename descclassname"><span class="pre">wbia.templates.notebook_helpers.</span></span><span class="sig-name descname"><span class="pre">make_cells_wider</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates/notebook_helpers.html#make_cells_wider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.notebook_helpers.make_cells_wider" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</div>
-<div class="section" id="module-wbia.templates">
+</section>
+<section id="module-wbia.templates">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-wbia.templates" title="Permalink to this headline">¶</a></h2>
 <dl class="py data">
-<dt id="wbia.templates.IMPORT_TUPLES">
-<code class="sig-prename descclassname"><span class="pre">wbia.templates.</span></code><code class="sig-name descname"><span class="pre">IMPORT_TUPLES</span></code><em class="property"> <span class="pre">=</span> <span class="pre">[('generate_notebook',</span> <span class="pre">None),</span> <span class="pre">('notebook_cells',</span> <span class="pre">None)]</span></em><a class="headerlink" href="#wbia.templates.IMPORT_TUPLES" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wbia.templates.IMPORT_TUPLES">
+<span class="sig-prename descclassname"><span class="pre">wbia.templates.</span></span><span class="sig-name descname"><span class="pre">IMPORT_TUPLES</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[('generate_notebook',</span> <span class="pre">None),</span> <span class="pre">('notebook_cells',</span> <span class="pre">None)]</span></em><a class="headerlink" href="#wbia.templates.IMPORT_TUPLES" title="Permalink to this definition">¶</a></dt>
 <dd><p>Regen Command:
 cd /home/joncrall/code/wbia/wbia/templates
 makeinit.py –modname=wbia.templates</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="wbia.templates.reassign_submodule_attributes">
-<code class="sig-prename descclassname"><span class="pre">wbia.templates.</span></code><code class="sig-name descname"><span class="pre">reassign_submodule_attributes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates.html#reassign_submodule_attributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.reassign_submodule_attributes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wbia.templates.reassign_submodule_attributes">
+<span class="sig-prename descclassname"><span class="pre">wbia.templates.</span></span><span class="sig-name descname"><span class="pre">reassign_submodule_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates.html#reassign_submodule_attributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.reassign_submodule_attributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>why reloading all the modules doesnt do this I don’t know</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="wbia.templates.reload_subs">
-<code class="sig-prename descclassname"><span class="pre">wbia.templates.</span></code><code class="sig-name descname"><span class="pre">reload_subs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates.html#reload_subs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.reload_subs" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wbia.templates.reload_subs">
+<span class="sig-prename descclassname"><span class="pre">wbia.templates.</span></span><span class="sig-name descname"><span class="pre">reload_subs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/templates.html#reload_subs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.templates.reload_subs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reloads wbia.templates and submodules</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="wbia.templates.rrrr">
-<code class="sig-prename descclassname"><span class="pre">wbia.templates.</span></code><code class="sig-name descname"><span class="pre">rrrr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wbia.templates.rrrr" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wbia.templates.rrrr">
+<span class="sig-prename descclassname"><span class="pre">wbia.templates.</span></span><span class="sig-name descname"><span class="pre">rrrr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wbia.templates.rrrr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reloads wbia.templates and submodules</p>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -324,7 +325,7 @@ makeinit.py –modname=wbia.templates</p>
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

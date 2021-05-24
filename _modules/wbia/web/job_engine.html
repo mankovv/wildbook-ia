@@ -6,9 +6,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>wbia.web.job_engine &#8212; Wildbook Image Analysis (IA)  documentation</title>
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -170,6 +170,8 @@
 
 <div class="viewcode-block" id="retry_job"><a class="viewcode-back" href="../../../wbia.web.html#wbia.web.job_engine.retry_job">[docs]</a><span class="nd">@register_ibs_method</span>
 <span class="k">def</span> <span class="nf">retry_job</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">jobid</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">exists</span>
+
     <span class="n">shelve_path</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_shelves_path</span><span class="p">()</span>
     <span class="n">job_record_filename</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.pkl&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">jobid</span><span class="p">,)</span>
     <span class="n">job_record_filepath</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">shelve_path</span><span class="p">,</span> <span class="n">job_record_filename</span><span class="p">)</span>
@@ -1061,6 +1063,7 @@
         <span class="n">callback_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">callback_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">lane</span><span class="o">=</span><span class="s1">&#39;slow&#39;</span><span class="p">,</span>
+        <span class="n">jobid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
@@ -1094,6 +1097,11 @@
             <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
                 <span class="k">pass</span>
 
+            <span class="k">if</span> <span class="n">jobid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jobid</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="n">jobid_</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">(</span><span class="n">jobid</span><span class="p">)</span>
+                <span class="k">assert</span> <span class="n">jobid_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jobid_</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">)</span>
+
             <span class="n">engine_request</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="n">action</span><span class="p">,</span>
                 <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="n">args</span><span class="p">,</span>
@@ -1101,7 +1109,7 @@
                 <span class="s1">&#39;callback_url&#39;</span><span class="p">:</span> <span class="n">callback_url</span><span class="p">,</span>
                 <span class="s1">&#39;callback_method&#39;</span><span class="p">:</span> <span class="n">callback_method</span><span class="p">,</span>
                 <span class="s1">&#39;request&#39;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
-                <span class="s1">&#39;restart_jobid&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;restart_jobid&#39;</span><span class="p">:</span> <span class="n">jobid</span><span class="p">,</span>
                 <span class="s1">&#39;restart_jobcounter&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="s1">&#39;restart_received&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="s1">&#39;lane&#39;</span><span class="p">:</span> <span class="n">lane</span><span class="p">,</span>
@@ -1113,7 +1121,11 @@
             <span class="n">jobiface</span><span class="o">.</span><span class="n">engine_recieve_socket</span><span class="o">.</span><span class="n">send_json</span><span class="p">(</span><span class="n">engine_request</span><span class="p">)</span>
             <span class="n">reply_notify</span> <span class="o">=</span> <span class="n">jobiface</span><span class="o">.</span><span class="n">engine_recieve_socket</span><span class="o">.</span><span class="n">recv_json</span><span class="p">()</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reply_notify = </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">reply_notify</span><span class="p">,))</span>
-            <span class="n">jobid</span> <span class="o">=</span> <span class="n">reply_notify</span><span class="p">[</span><span class="s1">&#39;jobid&#39;</span><span class="p">]</span>
+            <span class="n">jobid_</span> <span class="o">=</span> <span class="n">reply_notify</span><span class="p">[</span><span class="s1">&#39;jobid&#39;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">jobid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">jobid</span> <span class="o">==</span> <span class="n">jobid_</span>
+            <span class="n">jobid</span> <span class="o">=</span> <span class="n">jobid_</span>
 
             <span class="n">ibs</span> <span class="o">=</span> <span class="n">jobiface</span><span class="o">.</span><span class="n">ibs</span>
             <span class="k">if</span> <span class="n">ibs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2360,7 +2372,7 @@
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

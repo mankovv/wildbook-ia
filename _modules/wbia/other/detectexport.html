@@ -6,9 +6,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>wbia.other.detectexport &#8212; Wildbook Image Analysis (IA)  documentation</title>
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -440,6 +440,7 @@
     <span class="n">min_examples</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="n">category_mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">viewpoint_mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">flip_mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">skip_rate</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
@@ -469,6 +470,7 @@
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;category mapping = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">repr3</span><span class="p">(</span><span class="n">category_mapping</span><span class="p">),))</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;viewpoint mapping = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">repr3</span><span class="p">(</span><span class="n">viewpoint_mapping</span><span class="p">),))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;flip mapping = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">repr3</span><span class="p">(</span><span class="n">flip_mapping</span><span class="p">),))</span>
 
     <span class="c1"># train_gid_set = ibs.get_valid_gids()</span>
     <span class="k">if</span> <span class="n">train_gid_set</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -503,14 +505,24 @@
     <span class="n">category_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">category_list</span><span class="p">)</span>
 
     <span class="c1"># Filter the tup_list based on the requested categories</span>
-    <span class="n">tup_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">aid_list</span><span class="p">,</span> <span class="n">species_list</span><span class="p">,</span> <span class="n">yaw_list</span><span class="p">))</span>
-    <span class="n">old_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tup_list</span><span class="p">)</span>
-    <span class="n">tup_list</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="n">aid</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">viewpoint_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">yaw</span><span class="p">,</span> <span class="n">yaw</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">aid</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">yaw</span> <span class="ow">in</span> <span class="n">tup_list</span>
-        <span class="k">if</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">category_set</span>
-    <span class="p">]</span>
+    <span class="n">data_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">aid_list</span><span class="p">,</span> <span class="n">species_list</span><span class="p">,</span> <span class="n">yaw_list</span><span class="p">))</span>
+    <span class="n">old_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_list</span><span class="p">)</span>
+
+    <span class="n">tup_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">aid</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">yaw</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">category_set</span><span class="p">:</span>
+            <span class="n">viewpoint</span> <span class="o">=</span> <span class="n">viewpoint_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">yaw</span><span class="p">,</span> <span class="n">yaw</span><span class="p">)</span>
+
+            <span class="n">flipped</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">0.5</span>
+            <span class="n">flip_viewpoint</span> <span class="o">=</span> <span class="n">flip_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">viewpoint</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">flip_viewpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">flipped</span><span class="p">:</span>
+                    <span class="n">viewpoint</span> <span class="o">=</span> <span class="n">flip_viewpoint</span>
+
+            <span class="n">tup</span> <span class="o">=</span> <span class="p">(</span><span class="n">aid</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">viewpoint</span><span class="p">,</span> <span class="n">flipped</span><span class="p">)</span>
+            <span class="n">tup_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">)</span>
     <span class="n">new_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tup_list</span><span class="p">)</span>
+
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Filtered annotations: keep </span><span class="si">%d</span><span class="s1"> / original </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_len</span><span class="p">,</span> <span class="n">old_len</span><span class="p">))</span>
 
     <span class="c1"># Skip any annotations that are of the wanted category and don&#39;t have a specified viewpoint</span>
@@ -518,7 +530,7 @@
     <span class="n">seen_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">yaw_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">tup_list</span><span class="p">:</span>
-        <span class="n">aid</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">yaw</span> <span class="o">=</span> <span class="n">tup</span>
+        <span class="n">aid</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">yaw</span><span class="p">,</span> <span class="n">flipped</span> <span class="o">=</span> <span class="n">tup</span>
         <span class="c1"># Keep track of the number of overall instances</span>
         <span class="k">if</span> <span class="n">species</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_dict</span><span class="p">:</span>
             <span class="n">seen_dict</span><span class="p">[</span><span class="n">species</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -579,8 +591,9 @@
     <span class="n">skipped_seen</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">aid_list_</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">category_list_</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">flipped_list_</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">tup_list</span><span class="p">:</span>
-        <span class="n">aid</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">yaw</span> <span class="o">=</span> <span class="n">tup</span>
+        <span class="n">aid</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">yaw</span><span class="p">,</span> <span class="n">flipped</span> <span class="o">=</span> <span class="n">tup</span>
         <span class="k">if</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">valid_yaw_set</span><span class="p">:</span>
             <span class="c1"># If the species is valid, but this specific annotation has no yaw, skip it</span>
             <span class="k">if</span> <span class="n">yaw</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -594,8 +607,10 @@
             <span class="k">continue</span>
         <span class="n">aid_list_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aid</span><span class="p">)</span>
         <span class="n">category_list_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Skipped Yaw:  skipped </span><span class="si">%d</span><span class="s1"> / total </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">skipped_yaw</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tup_list</span><span class="p">)))</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Skipped Seen: skipped </span><span class="si">%d</span><span class="s1"> / total </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">skipped_seen</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tup_list</span><span class="p">)))</span>
+        <span class="n">flipped_list_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">flipped</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Yaw:  skipped </span><span class="si">%d</span><span class="s1"> / total </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">skipped_yaw</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tup_list</span><span class="p">)))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Seen: skipped </span><span class="si">%d</span><span class="s1"> / total </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">skipped_seen</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tup_list</span><span class="p">)))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Flipped: </span><span class="si">%d</span><span class="s1"> / total </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">flipped_list_</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">flipped_list_</span><span class="p">)))</span>
 
     <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">category_list_</span><span class="p">)):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Making folder for </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">category</span><span class="p">,))</span>
@@ -611,7 +626,9 @@
 
     <span class="c1"># Get training data</span>
     <span class="n">label_list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">aid</span><span class="p">,</span> <span class="n">chip</span><span class="p">,</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">aid_list_</span><span class="p">,</span> <span class="n">chip_list_</span><span class="p">,</span> <span class="n">category_list_</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">aid</span><span class="p">,</span> <span class="n">chip</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">flipped</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+        <span class="n">aid_list_</span><span class="p">,</span> <span class="n">chip_list_</span><span class="p">,</span> <span class="n">category_list_</span><span class="p">,</span> <span class="n">flipped_list_</span>
+    <span class="p">):</span>
 
         <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">aid</span><span class="p">,)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Processing AID: </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">args</span><span class="p">)</span>
@@ -632,6 +649,10 @@
         <span class="p">)</span>
         <span class="n">patch_filename</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_annot_aid_</span><span class="si">%s</span><span class="s1">.png&#39;</span> <span class="o">%</span> <span class="n">values</span>
         <span class="n">patch_filepath</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">raw_path</span><span class="p">,</span> <span class="n">patch_filename</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">flipped</span><span class="p">:</span>
+            <span class="n">chip</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">chip</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
         <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">patch_filepath</span><span class="p">,</span> <span class="n">chip</span><span class="p">)</span>
 
         <span class="c1"># Compute label</span>
@@ -704,7 +725,7 @@
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
