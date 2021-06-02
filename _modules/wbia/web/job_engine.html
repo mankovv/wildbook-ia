@@ -2107,13 +2107,7 @@
             <span class="k">assert</span> <span class="n">callback_method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;PUT&#39;</span><span class="p">],</span> <span class="n">message</span>
 
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s1">&#39;jobid&#39;</span><span class="p">:</span> <span class="n">jobid</span><span class="p">,</span>
-                <span class="p">}</span>
-                <span class="n">status_</span> <span class="o">=</span> <span class="n">collector_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">jobid</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">status_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">status_</span>
-
+                <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jobid&#39;</span><span class="p">:</span> <span class="n">jobid</span><span class="p">}</span>
                 <span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">callback_url</span><span class="p">,</span>
                     <span class="n">callback_method</span><span class="p">,</span>
