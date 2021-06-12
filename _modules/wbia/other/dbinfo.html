@@ -906,6 +906,8 @@
     <span class="n">ca_removed_aids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">ca_added_aids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">aid</span><span class="p">,</span> <span class="n">species_</span><span class="p">,</span> <span class="n">viewpoint_</span><span class="p">,</span> <span class="n">quality_</span><span class="p">,</span> <span class="n">interest_</span><span class="p">,</span> <span class="n">canonical_</span> <span class="ow">in</span> <span class="n">zipped</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">species_</span> <span class="o">==</span> <span class="s1">&#39;zebra_grevys+_canonical_&#39;</span><span class="p">:</span>
+            <span class="k">continue</span>
         <span class="k">assert</span> <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">species_</span><span class="p">,</span> <span class="n">viewpoint_</span><span class="p">,</span> <span class="n">quality_</span><span class="p">]</span>
         <span class="n">species_</span> <span class="o">=</span> <span class="n">species_</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="n">viewpoint_</span> <span class="o">=</span> <span class="n">viewpoint_</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
