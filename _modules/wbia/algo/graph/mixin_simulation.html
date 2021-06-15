@@ -58,6 +58,7 @@
         <span class="n">enable_inference</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">classifiers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">match_state_thresh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">pb_state_thresh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_outer_loops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -87,7 +88,6 @@
                 <span class="n">INCMP</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
             <span class="p">}</span>
 
-        <span class="n">pb_state_thresh</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">pb_state_thresh</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">pb_state_thresh</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s1">&#39;pb&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
@@ -261,10 +261,10 @@
             <span class="s1">&#39;pred_decision&#39;</span><span class="p">:</span> <span class="n">infr</span><span class="o">.</span><span class="n">test_state</span><span class="p">[</span><span class="s1">&#39;pred_decision&#39;</span><span class="p">],</span>
             <span class="s1">&#39;true_decision&#39;</span><span class="p">:</span> <span class="n">infr</span><span class="o">.</span><span class="n">test_state</span><span class="p">[</span><span class="s1">&#39;true_decision&#39;</span><span class="p">],</span>
             <span class="s1">&#39;n_neg_redun&#39;</span><span class="p">:</span> <span class="n">infr</span><span class="o">.</span><span class="n">neg_redun_metagraph</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(),</span>
-            <span class="s1">&#39;n_neg_redun1&#39;</span><span class="p">:</span> <span class="p">(</span>
-                <span class="n">infr</span><span class="o">.</span><span class="n">neg_metagraph</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
-                <span class="o">-</span> <span class="n">infr</span><span class="o">.</span><span class="n">neg_metagraph</span><span class="o">.</span><span class="n">number_of_selfloops</span><span class="p">()</span>
-            <span class="p">),</span>
+            <span class="c1"># &#39;n_neg_redun1&#39;: (</span>
+            <span class="c1">#     infr.neg_metagraph.number_of_edges()</span>
+            <span class="c1">#     - infr.neg_metagraph.number_of_selfloops()</span>
+            <span class="c1"># ),</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="n">metrics</span></div>

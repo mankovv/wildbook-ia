@@ -267,7 +267,7 @@
         <span class="k">if</span> <span class="n">decision</span> <span class="o">==</span> <span class="n">UNREV</span><span class="p">:</span>
             <span class="c1"># Unreviewing an edge deletes anything not yet committed</span>
             <span class="k">if</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">infr</span><span class="o">.</span><span class="n">external_feedback</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;External edge reviews cannot be undone&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;External edge reviews cannot be undone&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">infr</span><span class="o">.</span><span class="n">internal_feedback</span><span class="p">:</span>
                 <span class="k">del</span> <span class="n">infr</span><span class="o">.</span><span class="n">internal_feedback</span><span class="p">[</span><span class="n">edge</span><span class="p">]</span>
 
