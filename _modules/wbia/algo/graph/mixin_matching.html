@@ -892,6 +892,7 @@
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">need_flags</span><span class="p">):</span>
             <span class="n">need_edges</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">need_flags</span><span class="p">)</span>
+            <span class="n">need_edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">need_edges</span><span class="p">))</span>
             <span class="n">infr</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
                 <span class="s1">&#39;There are </span><span class="si">{}</span><span class="s1"> edges without probabilities&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">need_edges</span><span class="p">)),</span> <span class="mi">1</span>
             <span class="p">)</span>
