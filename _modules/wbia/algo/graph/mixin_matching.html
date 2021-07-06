@@ -797,6 +797,7 @@
         <span class="n">prescore_method</span><span class="o">=</span><span class="s1">&#39;csum&#39;</span><span class="p">,</span>
         <span class="n">score_method</span><span class="o">=</span><span class="s1">&#39;csum&#39;</span><span class="p">,</span>
         <span class="n">sv_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">cfgdict_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -814,20 +815,26 @@
 
         <span class="c1"># do LNBNN query for new edges</span>
         <span class="c1"># Use one-vs-many to establish candidate edges to classify</span>
+        <span class="n">cfgdict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;resize_dim&#39;</span><span class="p">:</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;dim_size&#39;</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span>
+            <span class="s1">&#39;requery&#39;</span><span class="p">:</span> <span class="n">requery</span><span class="p">,</span>
+            <span class="s1">&#39;can_match_samename&#39;</span><span class="p">:</span> <span class="n">can_match_samename</span><span class="p">,</span>
+            <span class="s1">&#39;can_match_sameimg&#39;</span><span class="p">:</span> <span class="n">can_match_sameimg</span><span class="p">,</span>
+            <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="n">K</span><span class="p">,</span>
+            <span class="s1">&#39;Knorm&#39;</span><span class="p">:</span> <span class="n">Knorm</span><span class="p">,</span>
+            <span class="s1">&#39;sv_on&#39;</span><span class="p">:</span> <span class="n">sv_on</span><span class="p">,</span>
+            <span class="s1">&#39;prescore_method&#39;</span><span class="p">:</span> <span class="n">prescore_method</span><span class="p">,</span>
+            <span class="s1">&#39;score_method&#39;</span><span class="p">:</span> <span class="n">score_method</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">cfgdict_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cfgdict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cfgdict_</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[find_lnbnn_candidate_edges] Using cfgdict = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">repr3</span><span class="p">(</span><span class="n">cfgdict</span><span class="p">),))</span>
+
         <span class="n">infr</span><span class="o">.</span><span class="n">exec_matching</span><span class="p">(</span>
             <span class="n">name_method</span><span class="o">=</span><span class="s1">&#39;edge&#39;</span><span class="p">,</span>
-            <span class="n">cfgdict</span><span class="o">=</span><span class="p">{</span>
-                <span class="s1">&#39;resize_dim&#39;</span><span class="p">:</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;dim_size&#39;</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span>
-                <span class="s1">&#39;requery&#39;</span><span class="p">:</span> <span class="n">requery</span><span class="p">,</span>
-                <span class="s1">&#39;can_match_samename&#39;</span><span class="p">:</span> <span class="n">can_match_samename</span><span class="p">,</span>
-                <span class="s1">&#39;can_match_sameimg&#39;</span><span class="p">:</span> <span class="n">can_match_sameimg</span><span class="p">,</span>
-                <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="n">K</span><span class="p">,</span>
-                <span class="s1">&#39;Knorm&#39;</span><span class="p">:</span> <span class="n">Knorm</span><span class="p">,</span>
-                <span class="s1">&#39;sv_on&#39;</span><span class="p">:</span> <span class="n">sv_on</span><span class="p">,</span>
-                <span class="s1">&#39;prescore_method&#39;</span><span class="p">:</span> <span class="n">prescore_method</span><span class="p">,</span>
-                <span class="s1">&#39;score_method&#39;</span><span class="p">:</span> <span class="n">score_method</span><span class="p">,</span>
-            <span class="p">},</span>
+            <span class="n">cfgdict</span><span class="o">=</span><span class="n">cfgdict</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># infr.apply_match_edges(review_cfg={&#39;ranks_top&#39;: 5})</span>
         <span class="n">ranks_top</span> <span class="o">=</span> <span class="n">infr</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;ranking.ntop&#39;</span><span class="p">]</span>
@@ -1189,7 +1196,7 @@
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
