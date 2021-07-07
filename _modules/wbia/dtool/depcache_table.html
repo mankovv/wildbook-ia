@@ -68,6 +68,7 @@
 
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
 
 
 <span class="p">(</span><span class="nb">print</span><span class="p">,</span> <span class="n">rrr</span><span class="p">,</span> <span class="n">profile</span><span class="p">)</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">inject2</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="s1">&#39;[depcache_table]&#39;</span><span class="p">)</span>
@@ -1792,7 +1793,7 @@
         <span class="c1"># CALL EXTERNAL PREPROCESSING / GENERATION FUNCTION</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># prog_iter = list(prog_iter)</span>
-            <span class="k">for</span> <span class="n">dirty_chunk</span> <span class="ow">in</span> <span class="n">prog_iter</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dirty_chunk</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">prog_iter</span><span class="p">):</span>
                 <span class="n">nChunkInput</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dirty_chunk</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">nChunkInput</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">return</span>
