@@ -223,7 +223,7 @@
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;[qreq] piperoot HACK&#39;</span><span class="p">)</span>
         <span class="n">requestclass</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">depc_annot</span><span class="o">.</span><span class="n">requestclass_dict</span><span class="p">[</span><span class="n">piperoot</span><span class="p">]</span>
-        <span class="k">assert</span> <span class="n">custom_nid_lookup</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;unsupported&#39;</span>
+        <span class="c1"># assert custom_nid_lookup is None, &#39;unsupported&#39;</span>
         <span class="n">qreq_</span> <span class="o">=</span> <span class="n">request</span> <span class="o">=</span> <span class="n">requestclass</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>  <span class="c1"># NOQA</span>
             <span class="n">ibs</span><span class="o">.</span><span class="n">depc_annot</span><span class="p">,</span> <span class="n">qaid_list</span><span class="p">,</span> <span class="n">daid_list</span><span class="p">,</span> <span class="n">cfgdict</span><span class="p">,</span> <span class="n">tablename</span><span class="o">=</span><span class="n">piperoot</span>
         <span class="p">)</span>

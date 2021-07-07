@@ -3348,6 +3348,7 @@
         <span class="n">refresh</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="n">current_species_rowids</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_annot_species_rowids</span><span class="p">(</span><span class="n">aid_list</span><span class="p">)</span>
+    <span class="c1"># current_species_rowids += ibs.add_species([&#39;Same Animal&#39;, &#39;Different Animals&#39;])</span>
 
     <span class="n">species_count</span> <span class="o">=</span> <span class="p">[</span>
         <span class="nb">len</span><span class="p">(</span><span class="n">current_species_rowids</span><span class="p">)</span> <span class="o">-</span> <span class="n">current_species_rowids</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">species_rowid</span><span class="p">)</span>
@@ -3430,6 +3431,24 @@
         <span class="n">EMBEDDED_CSS</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">EMBEDDED_JAVASCRIPT</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">review</span><span class="o">=</span><span class="n">review</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="review_species_holding"><a class="viewcode-back" href="../../../wbia.web.html#wbia.web.routes.review_species_holding">[docs]</a><span class="nd">@register_route</span><span class="p">(</span><span class="s1">&#39;/review/species/holding/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">review_species_holding</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">tup</span> <span class="o">=</span> <span class="n">appf</span><span class="o">.</span><span class="n">get_review_annot_args</span><span class="p">(</span><span class="n">appf</span><span class="o">.</span><span class="n">imageset_annot_processed</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">aid_list</span><span class="p">,</span> <span class="n">reviewed_list</span><span class="p">,</span> <span class="n">imgsetid</span><span class="p">,</span> <span class="n">src_ag</span><span class="p">,</span> <span class="n">dst_ag</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">aid</span><span class="p">,</span> <span class="n">previous</span><span class="p">)</span> <span class="o">=</span> <span class="n">tup</span>
+
+    <span class="n">callback_url</span> <span class="o">=</span> <span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;review_species&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">appf</span><span class="o">.</span><span class="n">template</span><span class="p">(</span>
+        <span class="s1">&#39;review&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;species_holding&#39;</span><span class="p">,</span>
+        <span class="n">imgsetid</span><span class="o">=</span><span class="n">imgsetid</span><span class="p">,</span>
+        <span class="n">src_ag</span><span class="o">=</span><span class="n">src_ag</span><span class="p">,</span>
+        <span class="n">dst_ag</span><span class="o">=</span><span class="n">dst_ag</span><span class="p">,</span>
+        <span class="n">previous</span><span class="o">=</span><span class="n">previous</span><span class="p">,</span>
+        <span class="n">callback_url</span><span class="o">=</span><span class="n">callback_url</span><span class="p">,</span>
+        <span class="n">callback_method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 
