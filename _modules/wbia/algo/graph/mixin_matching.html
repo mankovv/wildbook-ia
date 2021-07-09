@@ -213,44 +213,47 @@
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Unknown name_method=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_method</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">qaids_chunks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">ichunks</span><span class="p">(</span><span class="n">qaids</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">))</span>
-            <span class="n">num_chunks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">qaids_chunks</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">batch_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">qaids_chunks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">ichunks</span><span class="p">(</span><span class="n">qaids</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">))</span>
+                <span class="n">num_chunks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">qaids_chunks</span><span class="p">)</span>
 
-            <span class="n">arg_iter</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-                <span class="nb">zip</span><span class="p">(</span>
-                    <span class="p">[</span><span class="n">ibs</span><span class="o">.</span><span class="n">dbdir</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
-                    <span class="n">qaids_chunks</span><span class="p">,</span>
-                    <span class="p">[</span><span class="n">daids</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
-                    <span class="p">[</span><span class="n">cfgdict</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
-                    <span class="p">[</span><span class="n">custom_nid_lookup</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
-                    <span class="p">[</span><span class="n">infr</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
-                    <span class="p">[</span><span class="n">use_cache</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
-                    <span class="p">[</span><span class="n">invalidate_supercache</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
-                    <span class="p">[</span><span class="n">ranks_top</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
+                <span class="n">arg_iter</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                    <span class="nb">zip</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">ibs</span><span class="o">.</span><span class="n">dbdir</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
+                        <span class="n">qaids_chunks</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">daids</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">cfgdict</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">custom_nid_lookup</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">infr</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">use_cache</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">invalidate_supercache</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">ranks_top</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
-            <span class="p">)</span>
 
-            <span class="n">nprocs</span> <span class="o">=</span> <span class="mi">8</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Creating </span><span class="si">%d</span><span class="s1"> processes&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nprocs</span><span class="p">,))</span>
-            <span class="n">executor</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">nprocs</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Submitting workers&#39;</span><span class="p">)</span>
-            <span class="n">fs_chunk</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">ut</span><span class="o">.</span><span class="n">ProgIter</span><span class="p">(</span><span class="n">arg_iter</span><span class="p">,</span> <span class="n">lbl</span><span class="o">=</span><span class="s1">&#39;submit matching threads&#39;</span><span class="p">):</span>
-                <span class="n">fs</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">_make_rankings_worker</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-                <span class="n">fs_chunk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
+                <span class="n">nprocs</span> <span class="o">=</span> <span class="mi">8</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Creating </span><span class="si">%d</span><span class="s1"> processes&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nprocs</span><span class="p">,))</span>
+                <span class="n">executor</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">nprocs</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Submitting workers&#39;</span><span class="p">)</span>
+                <span class="n">fs_chunk</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">ut</span><span class="o">.</span><span class="n">ProgIter</span><span class="p">(</span><span class="n">arg_iter</span><span class="p">,</span> <span class="n">lbl</span><span class="o">=</span><span class="s1">&#39;submit matching threads&#39;</span><span class="p">):</span>
+                    <span class="n">fs</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">_make_rankings_worker</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+                    <span class="n">fs_chunk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
 
-            <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">fs</span> <span class="ow">in</span> <span class="n">ut</span><span class="o">.</span><span class="n">ProgIter</span><span class="p">(</span><span class="n">fs_chunk</span><span class="p">,</span> <span class="n">lbl</span><span class="o">=</span><span class="s1">&#39;getting matching result&#39;</span><span class="p">):</span>
-                    <span class="n">result</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                <span class="k">raise</span>
-            <span class="k">finally</span><span class="p">:</span>
-                <span class="n">executor</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">fs</span> <span class="ow">in</span> <span class="n">ut</span><span class="o">.</span><span class="n">ProgIter</span><span class="p">(</span><span class="n">fs_chunk</span><span class="p">,</span> <span class="n">lbl</span><span class="o">=</span><span class="s1">&#39;getting matching result&#39;</span><span class="p">):</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">raise</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="n">executor</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="n">num_chunks</span>
-            <span class="n">edges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="n">num_chunks</span>
+                <span class="n">edges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ut</span><span class="o">.</span><span class="n">embed</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">qreq_</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">new_query_request</span><span class="p">(</span>
                 <span class="n">qaids</span><span class="p">,</span>
