@@ -44,6 +44,8 @@
 <span class="kn">from</span> <span class="nn">wbia.algo.graph.nx_utils</span> <span class="kn">import</span> <span class="n">e_</span>
 <span class="kn">from</span> <span class="nn">wbia.algo.graph.state</span> <span class="kn">import</span> <span class="n">POSTV</span><span class="p">,</span> <span class="n">NEGTV</span><span class="p">,</span> <span class="n">INCMP</span><span class="p">,</span> <span class="n">UNREV</span>  <span class="c1"># NOQA</span>
 <span class="kn">from</span> <span class="nn">concurrent</span> <span class="kn">import</span> <span class="n">futures</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+
 
 <span class="nb">print</span><span class="p">,</span> <span class="n">rrr</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">inject2</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;wbia&#39;</span><span class="p">)</span>
@@ -62,17 +64,22 @@
 
     <span class="n">scoring</span> <span class="o">=</span> <span class="n">scoring</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="k">assert</span> <span class="n">scoring</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;annot&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">ranks_bot</span> <span class="o">==</span> <span class="mi">0</span>
 
     <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">cm</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cm_list</span><span class="p">):</span>
         <span class="n">score_list</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">annot_score_list</span>
-        <span class="n">rank_list</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">score_list</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">sortx</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">rank_list</span><span class="p">)</span>
 
-        <span class="n">top_sortx</span> <span class="o">=</span> <span class="n">sortx</span><span class="p">[:</span><span class="n">ranks_top</span><span class="p">]</span>
-        <span class="n">bot_sortx</span> <span class="o">=</span> <span class="n">sortx</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">sortx</span><span class="p">)</span> <span class="o">-</span> <span class="n">ranks_bot</span> <span class="p">:]</span>
-        <span class="n">short_sortx</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">top_sortx</span> <span class="o">+</span> <span class="n">bot_sortx</span><span class="p">)</span>
+        <span class="c1"># rank_list = ut.argsort(score_list)[::-1]</span>
+        <span class="c1"># sortx = ut.argsort(rank_list)</span>
 
-        <span class="n">daid_list</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">daid_list</span><span class="p">,</span> <span class="n">short_sortx</span><span class="p">)</span>
+        <span class="c1"># top_sortx = sortx[:ranks_top]</span>
+        <span class="c1"># bot_sortx = sortx[len(sortx) - ranks_bot :]</span>
+        <span class="c1"># short_sortx = ut.unique(top_sortx + bot_sortx)</span>
+        <span class="c1"># daid_list = ut.take(cm.daid_list, short_sortx)</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">score_list</span><span class="p">,</span> <span class="n">cm</span><span class="o">.</span><span class="n">daid_list</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">keep</span> <span class="o">=</span> <span class="n">values</span><span class="p">[:</span><span class="n">ranks_top</span><span class="p">]</span>
+        <span class="n">daid_list</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">take_column</span><span class="p">(</span><span class="n">keep</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">daid</span> <span class="ow">in</span> <span class="n">daid_list</span><span class="p">:</span>
             <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">qaid</span><span class="p">,</span> <span class="n">daid</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">u</span><span class="p">:</span>
@@ -211,6 +218,7 @@
             <span class="n">custom_nid_lookup</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Unknown name_method=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_method</span><span class="p">))</span>
+        <span class="n">verbose</span> <span class="o">=</span> <span class="n">infr</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span>
 
         <span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">batch_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -224,7 +232,7 @@
                         <span class="p">[</span><span class="n">daids</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
                         <span class="p">[</span><span class="n">cfgdict</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
                         <span class="p">[</span><span class="n">custom_nid_lookup</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
-                        <span class="p">[</span><span class="n">infr</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">verbose</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
                         <span class="p">[</span><span class="n">use_cache</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
                         <span class="p">[</span><span class="n">invalidate_supercache</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
                         <span class="p">[</span><span class="n">ranks_top</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">,</span>
@@ -253,7 +261,34 @@
                 <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="n">num_chunks</span>
                 <span class="n">edges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">ut</span><span class="o">.</span><span class="n">embed</span><span class="p">()</span>
+                <span class="c1"># &lt;HACK FOR PIE V2&gt;</span>
+                <span class="kn">from</span> <span class="nn">wbia_pie_v2._plugin</span> <span class="kn">import</span> <span class="n">distance_to_score</span>
+
+                <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+
+                <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="k">for</span> <span class="n">qaid</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">qaids</span><span class="p">):</span>
+                    <span class="n">daids_</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">daids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">qaid</span><span class="p">]))</span>
+                    <span class="n">pie_annot_distances</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">pie_v2_predict_light_distance</span><span class="p">(</span>
+                        <span class="n">qaid</span><span class="p">,</span>
+                        <span class="n">daids_</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">score_list</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">distance_to_score</span><span class="p">(</span><span class="n">pie_annot_distance</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="mf">500.0</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">pie_annot_distance</span> <span class="ow">in</span> <span class="n">pie_annot_distances</span>
+                    <span class="p">]</span>
+                    <span class="n">values</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">score_list</span><span class="p">,</span> <span class="n">daids_</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">keep</span> <span class="o">=</span> <span class="n">values</span><span class="p">[:</span><span class="n">ranks_top</span><span class="p">]</span>
+                    <span class="n">daid_list</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">take_column</span><span class="p">(</span><span class="n">keep</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">daid</span> <span class="ow">in</span> <span class="n">daid_list</span><span class="p">:</span>
+                        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">qaid</span><span class="p">,</span> <span class="n">daid</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">u</span><span class="p">:</span>
+                            <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">,</span> <span class="n">u</span>
+                        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+                <span class="n">edges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+                <span class="c1"># &lt;/HACK&gt;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">qreq_</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">new_query_request</span><span class="p">(</span>
                 <span class="n">qaids</span><span class="p">,</span>
