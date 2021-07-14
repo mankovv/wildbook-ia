@@ -2363,7 +2363,7 @@
                 <span class="p">):</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
                     <span class="n">bbox_list_</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_annot_bboxes</span><span class="p">(</span><span class="n">aid_list_</span><span class="p">)</span>
-                    <span class="n">theta_list_</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_annot_bboxes</span><span class="p">(</span><span class="n">aid_list_</span><span class="p">)</span>
+                    <span class="n">theta_list_</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_annot_thetas</span><span class="p">(</span><span class="n">aid_list_</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">aid_</span><span class="p">,</span> <span class="p">(</span><span class="n">xtl_</span><span class="p">,</span> <span class="n">ytl_</span><span class="p">,</span> <span class="n">w_</span><span class="p">,</span> <span class="n">h_</span><span class="p">),</span> <span class="n">theta_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
                         <span class="n">aid_list_</span><span class="p">,</span> <span class="n">bbox_list_</span><span class="p">,</span> <span class="n">theta_list_</span>
                     <span class="p">):</span>
