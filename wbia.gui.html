@@ -259,7 +259,7 @@ python -m wbia.gui.guiback show_advanced_id_interface –show</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="wbia.gui.guiback.CustomAnnotCfgSelector.sizeHint">
-<span class="sig-name descname"><span class="pre">sizeHint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">QSize</span><a class="reference internal" href="_modules/wbia/gui/guiback.html#CustomAnnotCfgSelector.sizeHint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.gui.guiback.CustomAnnotCfgSelector.sizeHint" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sizeHint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QSize</span></span></span><a class="reference internal" href="_modules/wbia/gui/guiback.html#CustomAnnotCfgSelector.sizeHint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.gui.guiback.CustomAnnotCfgSelector.sizeHint" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2013,7 +2013,7 @@ python -m wbia.gui.inspect_gui –test-QueryResultsWidget –cmd</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="wbia.gui.inspect_gui.QueryResultsWidget.sizeHint">
-<span class="sig-name descname"><span class="pre">sizeHint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">QSize</span><a class="reference internal" href="_modules/wbia/gui/inspect_gui.html#QueryResultsWidget.sizeHint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.gui.inspect_gui.QueryResultsWidget.sizeHint" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sizeHint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QSize</span></span></span><a class="reference internal" href="_modules/wbia/gui/inspect_gui.html#QueryResultsWidget.sizeHint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.gui.inspect_gui.QueryResultsWidget.sizeHint" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2436,7 +2436,7 @@ Context menus on right click of a table</p>
 <span class="sig-name descname"><span class="pre">select_table_indicies_from_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tblname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_table_change</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/gui/newgui.html#IBEISGuiWidget.select_table_indicies_from_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.gui.newgui.IBEISGuiWidget.select_table_indicies_from_text" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>- tablename of the id to parse from text</strong> (<em>tblname</em>) – </p>
+<dd class="field-odd"><p><strong>text</strong> (<em>tblname - tablename of the id to parse from</em>) – </p>
 </dd>
 </dl>
 <dl class="simple">
@@ -2638,7 +2638,7 @@ python -m wbia.gui.newgui –test-testfunc –cmd</p>
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="api.html">API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="wbia.algo.html">wbia.algo package</a></li>
@@ -2692,7 +2692,7 @@ python -m wbia.gui.newgui –test-testfunc –cmd</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -2714,7 +2714,7 @@ python -m wbia.gui.newgui –test-testfunc –cmd</p>
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

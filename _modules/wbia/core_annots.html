@@ -2355,9 +2355,31 @@
                 <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Orientation plug-in does not support species_tag = </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
                     <span class="n">species_tag</span><span class="p">,</span>
                 <span class="p">)</span>
+                <span class="n">aid_list_</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">species_dict</span><span class="p">[</span><span class="n">species</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">species_tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_plugin</span><span class="o">.</span><span class="n">MODEL_URLS</span>
+                    <span class="ow">or</span> <span class="n">species_tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_plugin</span><span class="o">.</span><span class="n">CONFIGS</span>
+                <span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                    <span class="n">bbox_list_</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_annot_bboxes</span><span class="p">(</span><span class="n">aid_list_</span><span class="p">)</span>
+                    <span class="n">theta_list_</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_annot_bboxes</span><span class="p">(</span><span class="n">aid_list_</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">aid_</span><span class="p">,</span> <span class="p">(</span><span class="n">xtl_</span><span class="p">,</span> <span class="n">ytl_</span><span class="p">,</span> <span class="n">w_</span><span class="p">,</span> <span class="n">h_</span><span class="p">),</span> <span class="n">theta_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                        <span class="n">aid_list_</span><span class="p">,</span> <span class="n">bbox_list_</span><span class="p">,</span> <span class="n">theta_list_</span>
+                    <span class="p">):</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">xtl_</span><span class="p">,</span>
+                            <span class="n">ytl_</span><span class="p">,</span>
+                            <span class="n">w_</span><span class="p">,</span>
+                            <span class="n">h_</span><span class="p">,</span>
+                            <span class="n">theta_</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="n">results_dict</span><span class="p">[</span><span class="n">aid_</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+
+                    <span class="k">continue</span>
+
                 <span class="k">assert</span> <span class="n">species_tag</span> <span class="ow">in</span> <span class="n">_plugin</span><span class="o">.</span><span class="n">MODEL_URLS</span><span class="p">,</span> <span class="n">message</span>
                 <span class="k">assert</span> <span class="n">species_tag</span> <span class="ow">in</span> <span class="n">_plugin</span><span class="o">.</span><span class="n">CONFIGS</span><span class="p">,</span> <span class="n">message</span>
-                <span class="n">aid_list_</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">species_dict</span><span class="p">[</span><span class="n">species</span><span class="p">])</span>
                 <span class="nb">print</span><span class="p">(</span>
                     <span class="s1">&#39;Computing </span><span class="si">%d</span><span class="s1"> orientations for species = </span><span class="si">%r</span><span class="s1">&#39;</span>
                     <span class="o">%</span> <span class="p">(</span>
@@ -2365,7 +2387,6 @@
                         <span class="n">species</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
-
                 <span class="n">output_list</span><span class="p">,</span> <span class="n">theta_list</span> <span class="o">=</span> <span class="n">_plugin</span><span class="o">.</span><span class="n">wbia_plugin_detect_oriented_box</span><span class="p">(</span>
                     <span class="n">ibs</span><span class="p">,</span> <span class="n">aid_list_</span><span class="p">,</span> <span class="n">species_tag</span><span class="p">,</span> <span class="n">plot_samples</span><span class="o">=</span><span class="kc">False</span>
                 <span class="p">)</span>
@@ -2491,7 +2512,8 @@
 
             <span class="n">result_gen</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">aid</span> <span class="ow">in</span> <span class="n">aid_list</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">results_dict</span><span class="p">[</span><span class="n">aid</span><span class="p">]</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">results_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">aid</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="n">result_gen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -3041,7 +3063,7 @@
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
 </ul>
@@ -3061,7 +3083,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -3083,7 +3105,7 @@
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

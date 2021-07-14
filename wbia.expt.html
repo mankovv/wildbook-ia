@@ -325,7 +325,7 @@ python -m wbia.expt.cfghelpers –test-parse_argv_cfg</p>
 <li><p><strong>valid_keys</strong> (<em>None</em>) – (default = None)</p></li>
 <li><p><strong>expand_nested</strong> (<em>bool</em>) – (default = True)</p></li>
 <li><p><strong>strict</strong> (<em>bool</em>) – (default = True)</p></li>
-<li><p><strong>- used for annot configs so special joins arent geometrically combined</strong> (<em>is_nestedcfgtype</em>) – </p></li>
+<li><p><strong>combined</strong> (<em>is_nestedcfgtype - used for annot configs so special joins arent geometrically</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -2348,7 +2348,7 @@ makeinit.py</p>
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="api.html">API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="wbia.algo.html">wbia.algo package</a></li>
@@ -2402,7 +2402,7 @@ makeinit.py</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -2424,7 +2424,7 @@ makeinit.py</p>
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
