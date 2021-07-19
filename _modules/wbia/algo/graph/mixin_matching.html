@@ -938,12 +938,12 @@
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; # DISABLE_DOCTEST</span>
 <span class="sd">            &gt;&gt;&gt; # xdoctest: +REQUIRES(--slow)</span>
-<span class="sd">            &gt;&gt;&gt; # ENABLE_DOCTEST</span>
 <span class="sd">            &gt;&gt;&gt; from wbia.algo.graph import demo</span>
 <span class="sd">            &gt;&gt;&gt; infr = demo.demodata_mtest_infr()</span>
 <span class="sd">            &gt;&gt;&gt; cand_edges = infr.find_lnbnn_candidate_edges()</span>
-<span class="sd">            &gt;&gt;&gt; assert len(cand_edges) &gt; 200</span>
+<span class="sd">            &gt;&gt;&gt; assert len(cand_edges) &gt; 200, len(cand_edges)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Refresh the name labels</span>
 
