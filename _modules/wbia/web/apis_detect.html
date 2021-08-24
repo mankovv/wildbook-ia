@@ -859,6 +859,12 @@
     <span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="detect_cnn_lightnet_image_uris_json"><a class="viewcode-back" href="../../../wbia.web.html#wbia.web.apis_detect.detect_cnn_lightnet_image_uris_json">[docs]</a><span class="nd">@register_ibs_method</span>
+<span class="k">def</span> <span class="nf">detect_cnn_lightnet_image_uris_json</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">image_uris</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">gid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">add_images</span><span class="p">(</span><span class="n">image_uris</span><span class="p">,</span> <span class="n">auto_localize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ibs</span><span class="o">.</span><span class="n">detect_cnn_lightnet_json</span><span class="p">(</span><span class="n">gid_list</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="detect_cnn_lightnet_json"><a class="viewcode-back" href="../../../wbia.web.html#wbia.web.apis_detect.detect_cnn_lightnet_json">[docs]</a><span class="nd">@register_ibs_method</span>
 <span class="nd">@accessor_decors</span><span class="o">.</span><span class="n">getter_1to1</span>
 <span class="k">def</span> <span class="nf">detect_cnn_lightnet_json</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

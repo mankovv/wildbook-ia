@@ -100,6 +100,7 @@
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">exists</span><span class="p">,</span> <span class="n">abspath</span><span class="p">,</span> <span class="n">splitext</span><span class="p">,</span> <span class="n">basename</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">wbia.control</span> <span class="kn">import</span> <span class="n">controller_inject</span>
+<span class="kn">from</span> <span class="nn">wbia.utils</span> <span class="kn">import</span> <span class="n">call_houston</span>
 <span class="kn">import</span> <span class="nn">multiprocessing</span>
 
 
@@ -1062,6 +1063,7 @@
         <span class="n">action</span><span class="p">,</span>
         <span class="n">callback_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">callback_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">callback_detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">lane</span><span class="o">=</span><span class="s1">&#39;slow&#39;</span><span class="p">,</span>
         <span class="n">jobid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span>
@@ -1108,6 +1110,7 @@
                 <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">,</span>
                 <span class="s1">&#39;callback_url&#39;</span><span class="p">:</span> <span class="n">callback_url</span><span class="p">,</span>
                 <span class="s1">&#39;callback_method&#39;</span><span class="p">:</span> <span class="n">callback_method</span><span class="p">,</span>
+                <span class="s1">&#39;callback_detailed&#39;</span><span class="p">:</span> <span class="n">callback_detailed</span><span class="p">,</span>
                 <span class="s1">&#39;request&#39;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
                 <span class="s1">&#39;restart_jobid&#39;</span><span class="p">:</span> <span class="n">jobid</span><span class="p">,</span>
                 <span class="s1">&#39;restart_jobcounter&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
@@ -1147,6 +1150,7 @@
             <span class="n">kwargs</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">callback_url</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">callback_method</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">callback_detailed</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">request</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">engine_request</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -2081,6 +2085,7 @@
         <span class="n">engine_result</span> <span class="o">=</span> <span class="n">collect_request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;engine_result&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">callback_url</span> <span class="o">=</span> <span class="n">collect_request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;callback_url&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">callback_method</span> <span class="o">=</span> <span class="n">collect_request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;callback_method&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">callback_detailed</span> <span class="o">=</span> <span class="n">collect_request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;callback_detailed&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
         <span class="c1"># Get the engine result jobid</span>
         <span class="n">jobid</span> <span class="o">=</span> <span class="n">engine_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;jobid&#39;</span><span class="p">,</span> <span class="n">jobid</span><span class="p">)</span>
@@ -2108,6 +2113,11 @@
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jobid&#39;</span><span class="p">:</span> <span class="n">jobid</span><span class="p">}</span>
+                <span class="k">if</span> <span class="n">callback_detailed</span><span class="p">:</span>
+                    <span class="n">shelve_value</span> <span class="o">=</span> <span class="n">get_shelve_value</span><span class="p">(</span><span class="n">shelve_output_filepath</span><span class="p">,</span> <span class="s1">&#39;result&#39;</span><span class="p">)</span>
+                    <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shelve_value</span><span class="p">[</span><span class="s1">&#39;exec_status&#39;</span><span class="p">]</span>
+                    <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;json_result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">shelve_value</span><span class="p">[</span><span class="s1">&#39;json_result&#39;</span><span class="p">])</span>
+                    <span class="n">shelve_value</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Release memory</span>
                 <span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">callback_url</span><span class="p">,</span>
                     <span class="n">callback_method</span><span class="p">,</span>
@@ -2120,10 +2130,29 @@
 
                 <span class="c1"># Perform callback</span>
                 <span class="k">if</span> <span class="n">callback_method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">callback_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;houston+&#39;</span><span class="p">):</span>
+                        <span class="c1"># Remove houston+ from callback_url</span>
+                        <span class="n">call_houston</span><span class="p">(</span>
+                            <span class="n">callback_url</span><span class="p">[</span><span class="mi">8</span><span class="p">:],</span>
+                            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+                            <span class="n">data</span><span class="o">=</span><span class="n">ut</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">data_dict</span><span class="p">),</span>
+                            <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">},</span>
+                        <span class="p">)</span>
                     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">callback_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_dict</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">callback_method</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">callback_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;houston+&#39;</span><span class="p">):</span>
+                        <span class="c1"># Remove houston+ from callback_url</span>
+                        <span class="n">call_houston</span><span class="p">(</span><span class="n">callback_url</span><span class="p">[</span><span class="mi">8</span><span class="p">:],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">data_dict</span><span class="p">)</span>
                     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">callback_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">data_dict</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">callback_method</span> <span class="o">==</span> <span class="s1">&#39;PUT&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">callback_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;houston+&#39;</span><span class="p">):</span>
+                        <span class="c1"># Remove houston+ from callback_url</span>
+                        <span class="n">call_houston</span><span class="p">(</span>
+                            <span class="n">callback_url</span><span class="p">[</span><span class="mi">8</span><span class="p">:],</span>
+                            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span>
+                            <span class="n">data</span><span class="o">=</span><span class="n">ut</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">data_dict</span><span class="p">),</span>
+                            <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">},</span>
+                        <span class="p">)</span>
                     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">callback_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_dict</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span>

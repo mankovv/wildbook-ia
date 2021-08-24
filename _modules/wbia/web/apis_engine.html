@@ -857,6 +857,7 @@
     <span class="n">image_uuid_list</span><span class="p">,</span>
     <span class="n">callback_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">callback_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">callback_detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">lane</span><span class="o">=</span><span class="s1">&#39;fast&#39;</span><span class="p">,</span>
     <span class="n">jobid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
@@ -867,24 +868,46 @@
 <span class="sd">        URL:</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        image_uuid_list (list) : list of image uuids to detect on.</span>
+<span class="sd">        image_uuid_list (list) : list of image uuids or urls to detect on.</span>
 <span class="sd">        callback_url (url) : url that will be called when detection succeeds or fails</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Check UUIDs</span>
-    <span class="n">ibs</span><span class="o">.</span><span class="n">web_check_uuids</span><span class="p">(</span><span class="n">image_uuid_list</span><span class="o">=</span><span class="n">image_uuid_list</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">image_uuid_list</span> <span class="ow">and</span> <span class="s1">&#39;://&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">image_uuid_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="c1"># Check UUIDs</span>
+        <span class="n">ibs</span><span class="o">.</span><span class="n">web_check_uuids</span><span class="p">(</span><span class="n">image_uuid_list</span><span class="o">=</span><span class="n">image_uuid_list</span><span class="p">)</span>
 
-    <span class="c1"># import wbia</span>
-    <span class="c1"># from wbia.web import apis_engine</span>
-    <span class="c1"># ibs.load_plugin_module(apis_engine)</span>
-    <span class="n">image_uuid_list</span> <span class="o">=</span> <span class="n">ensure_uuid_list</span><span class="p">(</span><span class="n">image_uuid_list</span><span class="p">)</span>
-    <span class="n">gid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_image_gids_from_uuid</span><span class="p">(</span><span class="n">image_uuid_list</span><span class="p">)</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">gid_list</span><span class="p">,</span>
-        <span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
-        <span class="s1">&#39;detect_cnn_lightnet_json&#39;</span><span class="p">,</span> <span class="n">callback_url</span><span class="p">,</span> <span class="n">callback_method</span><span class="p">,</span> <span class="n">lane</span><span class="p">,</span> <span class="n">jobid</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
-    <span class="p">)</span>
+        <span class="c1"># import wbia</span>
+        <span class="c1"># from wbia.web import apis_engine</span>
+        <span class="c1"># ibs.load_plugin_module(apis_engine)</span>
+        <span class="n">image_uuid_list</span> <span class="o">=</span> <span class="n">ensure_uuid_list</span><span class="p">(</span><span class="n">image_uuid_list</span><span class="p">)</span>
+        <span class="n">gid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_image_gids_from_uuid</span><span class="p">(</span><span class="n">image_uuid_list</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">gid_list</span><span class="p">,</span>
+            <span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
+            <span class="s1">&#39;detect_cnn_lightnet_json&#39;</span><span class="p">,</span>
+            <span class="n">callback_url</span><span class="p">,</span>
+            <span class="n">callback_method</span><span class="p">,</span>
+            <span class="n">callback_detailed</span><span class="p">,</span>
+            <span class="n">lane</span><span class="p">,</span>
+            <span class="n">jobid</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># image_uuid_list contains urls</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">image_uuid_list</span><span class="p">,</span>
+            <span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
+            <span class="s1">&#39;detect_cnn_lightnet_image_uris_json&#39;</span><span class="p">,</span>
+            <span class="n">callback_url</span><span class="p">,</span>
+            <span class="n">callback_method</span><span class="p">,</span>
+            <span class="n">callback_detailed</span><span class="p">,</span>
+            <span class="n">lane</span><span class="p">,</span>
+            <span class="n">jobid</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span>
+        <span class="p">)</span>
 
     <span class="c1"># if callback_url is not None:</span>
     <span class="c1">#    #import requests</span>

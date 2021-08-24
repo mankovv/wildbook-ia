@@ -60,6 +60,7 @@
 <span class="kn">import</span> <span class="nn">utool</span> <span class="k">as</span> <span class="nn">ut</span>
 <span class="kn">import</span> <span class="nn">vtool</span> <span class="k">as</span> <span class="nn">vt</span>
 <span class="kn">from</span> <span class="nn">wbia.web</span> <span class="kn">import</span> <span class="n">routes_ajax</span>
+<span class="kn">from</span> <span class="nn">wbia.utils</span> <span class="kn">import</span> <span class="n">call_houston</span>
 
 <span class="nb">print</span><span class="p">,</span> <span class="n">rrr</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">inject2</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;wbia&#39;</span><span class="p">)</span>
@@ -589,7 +590,8 @@
 
     <span class="n">url_protos</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;https://&#39;</span><span class="p">,</span> <span class="s1">&#39;http://&#39;</span><span class="p">]</span>
     <span class="n">s3_proto</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;s3://&#39;</span><span class="p">]</span>
-    <span class="n">valid_protos</span> <span class="o">=</span> <span class="n">s3_proto</span> <span class="o">+</span> <span class="n">url_protos</span>
+    <span class="n">houston_proto</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;houston+&#39;</span><span class="p">]</span>
+    <span class="n">valid_protos</span> <span class="o">=</span> <span class="n">s3_proto</span> <span class="o">+</span> <span class="n">url_protos</span> <span class="o">+</span> <span class="n">houston_proto</span>
 
     <span class="k">def</span> <span class="nf">isproto</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">valid_protos</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span> <span class="k">for</span> <span class="n">proto</span> <span class="ow">in</span> <span class="n">valid_protos</span><span class="p">)</span>
@@ -637,6 +639,14 @@
                         <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
                     <span class="p">),</span> <span class="s1">&#39;200 code not received on download&#39;</span>
                 <span class="c1"># Save</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">loc_gpath</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">temp_file_</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="mi">1024</span><span class="p">):</span>
+                        <span class="n">temp_file_</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">isproto</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">houston_proto</span><span class="p">):</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">call_houston</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+                <span class="k">assert</span> <span class="p">(</span>
+                    <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+                <span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;200 code not received on download: </span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">&#39;</span>
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">loc_gpath</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">temp_file_</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="mi">1024</span><span class="p">):</span>
                         <span class="n">temp_file_</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
