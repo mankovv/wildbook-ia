@@ -476,6 +476,9 @@
 <span class="p">):</span>
     <span class="n">gid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_annot_gids</span><span class="p">(</span><span class="n">aid_list</span><span class="p">)</span>
 
+    <span class="n">species_mapping_</span> <span class="o">=</span> <span class="n">species_mapping</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">species_mapping_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">gt_species_mapping</span><span class="p">)</span>
+
     <span class="n">species_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
     <span class="n">gt_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">gid</span><span class="p">,</span> <span class="n">aid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gid_list</span><span class="p">,</span> <span class="n">aid_list</span><span class="p">):</span>
@@ -512,9 +515,7 @@
             <span class="s1">&#39;ybr&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span>
             <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span>
             <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span>
-            <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="n">species_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                <span class="n">gt_species_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">species</span><span class="p">),</span> <span class="n">species</span>
-            <span class="p">),</span>
+            <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="n">species_mapping_</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">species</span><span class="p">),</span>
             <span class="s1">&#39;viewpoint&#39;</span><span class="p">:</span> <span class="n">viewpoint</span><span class="p">,</span>
             <span class="s1">&#39;interest&#39;</span><span class="p">:</span> <span class="n">interest</span><span class="p">,</span>
             <span class="s1">&#39;confidence&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
@@ -598,6 +599,9 @@
     <span class="n">ibs</span><span class="p">,</span> <span class="n">test_gid_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">species_mapping</span><span class="o">=</span><span class="p">{},</span> <span class="n">pred_species_mapping</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
     <span class="n">depc</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">depc_image</span>
+
+    <span class="n">species_mapping_</span> <span class="o">=</span> <span class="n">species_mapping</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">species_mapping_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pred_species_mapping</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="s1">&#39;feature2_algo&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;feature2_algo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;resnet&#39;</span>
@@ -713,9 +717,7 @@
                 <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span>
                 <span class="s1">&#39;theta&#39;</span><span class="p">:</span> <span class="n">theta</span><span class="p">,</span>
                 <span class="s1">&#39;confidence&#39;</span><span class="p">:</span> <span class="n">conf</span><span class="p">,</span>
-                <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="n">species_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                    <span class="n">pred_species_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">class_</span><span class="p">,</span> <span class="n">class_</span><span class="p">),</span> <span class="n">class_</span>
-                <span class="p">),</span>
+                <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="n">species_mapping_</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">class_</span><span class="p">,</span> <span class="n">class_</span><span class="p">),</span>
                 <span class="s1">&#39;viewpoint&#39;</span><span class="p">:</span> <span class="n">viewpoint</span><span class="p">,</span>
                 <span class="s1">&#39;interest&#39;</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">interest</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">interest</span> <span class="o">&gt;=</span> <span class="mf">0.84</span><span class="p">,</span>
                 <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="n">feature</span><span class="p">,</span>
