@@ -356,7 +356,12 @@
     <span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">qaid_list</span><span class="p">,</span> <span class="n">daid_list</span><span class="p">,</span> <span class="n">pipecfg</span><span class="p">)</span>
     <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
-        <span class="s1">&#39;query_chips_simple_dict&#39;</span><span class="p">,</span> <span class="n">callback_url</span><span class="p">,</span> <span class="n">callback_method</span><span class="p">,</span> <span class="n">lane</span><span class="p">,</span> <span class="n">jobid</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;query_chips_simple_dict&#39;</span><span class="p">,</span>
+        <span class="n">callback_url</span><span class="o">=</span><span class="n">callback_url</span><span class="p">,</span>
+        <span class="n">callback_method</span><span class="o">=</span><span class="n">callback_method</span><span class="p">,</span>
+        <span class="n">lane</span><span class="o">=</span><span class="n">lane</span><span class="p">,</span>
+        <span class="n">jobid</span><span class="o">=</span><span class="n">jobid</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># if callback_url is not None:</span>
@@ -434,7 +439,12 @@
         <span class="n">k</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
-        <span class="s1">&#39;query_chips_graph_complete&#39;</span><span class="p">,</span> <span class="n">callback_url</span><span class="p">,</span> <span class="n">callback_method</span><span class="p">,</span> <span class="n">lane</span><span class="p">,</span> <span class="n">jobid</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;query_chips_graph_complete&#39;</span><span class="p">,</span>
+        <span class="n">callback_url</span><span class="o">=</span><span class="n">callback_url</span><span class="p">,</span>
+        <span class="n">callback_method</span><span class="o">=</span><span class="n">callback_method</span><span class="p">,</span>
+        <span class="n">lane</span><span class="o">=</span><span class="n">lane</span><span class="p">,</span>
+        <span class="n">jobid</span><span class="o">=</span><span class="n">jobid</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">jobid</span></div>
 
@@ -673,7 +683,12 @@
     <span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">qaid_list</span><span class="p">,</span> <span class="n">daid_list</span><span class="p">,</span> <span class="n">user_feedback</span><span class="p">,</span> <span class="n">query_config_dict</span><span class="p">,</span> <span class="n">echo_query_params</span><span class="p">)</span>
     <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
-        <span class="s1">&#39;query_chips_graph&#39;</span><span class="p">,</span> <span class="n">callback_url</span><span class="p">,</span> <span class="n">callback_method</span><span class="p">,</span> <span class="n">lane</span><span class="p">,</span> <span class="n">jobid</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;query_chips_graph&#39;</span><span class="p">,</span>
+        <span class="n">callback_url</span><span class="o">=</span><span class="n">callback_url</span><span class="p">,</span>
+        <span class="n">callback_method</span><span class="o">=</span><span class="n">callback_method</span><span class="p">,</span>
+        <span class="n">lane</span><span class="o">=</span><span class="n">lane</span><span class="p">,</span>
+        <span class="n">jobid</span><span class="o">=</span><span class="n">jobid</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">jobid</span></div>
 
@@ -711,7 +726,12 @@
         <span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
-        <span class="s1">&#39;wic_cnn_json&#39;</span><span class="p">,</span> <span class="n">callback_url</span><span class="p">,</span> <span class="n">callback_method</span><span class="p">,</span> <span class="n">lane</span><span class="p">,</span> <span class="n">jobid</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;wic_cnn_json&#39;</span><span class="p">,</span>
+        <span class="n">callback_url</span><span class="o">=</span><span class="n">callback_url</span><span class="p">,</span>
+        <span class="n">callback_method</span><span class="o">=</span><span class="n">callback_method</span><span class="p">,</span>
+        <span class="n">lane</span><span class="o">=</span><span class="n">lane</span><span class="p">,</span>
+        <span class="n">jobid</span><span class="o">=</span><span class="n">jobid</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># if callback_url is not None:</span>
@@ -754,7 +774,12 @@
         <span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
-        <span class="s1">&#39;detect_cnn_yolo_json&#39;</span><span class="p">,</span> <span class="n">callback_url</span><span class="p">,</span> <span class="n">callback_method</span><span class="p">,</span> <span class="n">lane</span><span class="p">,</span> <span class="n">jobid</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;detect_cnn_yolo_json&#39;</span><span class="p">,</span>
+        <span class="n">callback_url</span><span class="o">=</span><span class="n">callback_url</span><span class="p">,</span>
+        <span class="n">callback_method</span><span class="o">=</span><span class="n">callback_method</span><span class="p">,</span>
+        <span class="n">lane</span><span class="o">=</span><span class="n">lane</span><span class="p">,</span>
+        <span class="n">jobid</span><span class="o">=</span><span class="n">jobid</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># if callback_url is not None:</span>
@@ -789,7 +814,12 @@
         <span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
-        <span class="s1">&#39;labeler_cnn&#39;</span><span class="p">,</span> <span class="n">callback_url</span><span class="p">,</span> <span class="n">callback_method</span><span class="p">,</span> <span class="n">lane</span><span class="p">,</span> <span class="n">jobid</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;labeler_cnn&#39;</span><span class="p">,</span>
+        <span class="n">callback_url</span><span class="o">=</span><span class="n">callback_url</span><span class="p">,</span>
+        <span class="n">callback_method</span><span class="o">=</span><span class="n">callback_method</span><span class="p">,</span>
+        <span class="n">lane</span><span class="o">=</span><span class="n">lane</span><span class="p">,</span>
+        <span class="n">jobid</span><span class="o">=</span><span class="n">jobid</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># if callback_url is not None:</span>
@@ -827,7 +857,12 @@
         <span class="n">database_imgsetid</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
-        <span class="s1">&#39;review_query_chips_best&#39;</span><span class="p">,</span> <span class="n">callback_url</span><span class="p">,</span> <span class="n">callback_method</span><span class="p">,</span> <span class="n">lane</span><span class="p">,</span> <span class="n">jobid</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;review_query_chips_best&#39;</span><span class="p">,</span>
+        <span class="n">callback_url</span><span class="o">=</span><span class="n">callback_url</span><span class="p">,</span>
+        <span class="n">callback_method</span><span class="o">=</span><span class="n">callback_method</span><span class="p">,</span>
+        <span class="n">lane</span><span class="o">=</span><span class="n">lane</span><span class="p">,</span>
+        <span class="n">jobid</span><span class="o">=</span><span class="n">jobid</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># if callback_url is not None:</span>
@@ -885,13 +920,13 @@
             <span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
-            <span class="s1">&#39;detect_cnn_lightnet_json&#39;</span><span class="p">,</span>
-            <span class="n">callback_url</span><span class="p">,</span>
-            <span class="n">callback_method</span><span class="p">,</span>
-            <span class="n">callback_detailed</span><span class="p">,</span>
-            <span class="n">lane</span><span class="p">,</span>
-            <span class="n">jobid</span><span class="p">,</span>
-            <span class="o">*</span><span class="n">args</span>
+            <span class="n">action</span><span class="o">=</span><span class="s1">&#39;detect_cnn_lightnet_json&#39;</span><span class="p">,</span>
+            <span class="n">callback_url</span><span class="o">=</span><span class="n">callback_url</span><span class="p">,</span>
+            <span class="n">callback_method</span><span class="o">=</span><span class="n">callback_method</span><span class="p">,</span>
+            <span class="n">callback_detailed</span><span class="o">=</span><span class="n">callback_detailed</span><span class="p">,</span>
+            <span class="n">lane</span><span class="o">=</span><span class="n">lane</span><span class="p">,</span>
+            <span class="n">jobid</span><span class="o">=</span><span class="n">jobid</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># image_uuid_list contains urls</span>
@@ -900,13 +935,13 @@
             <span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
-            <span class="s1">&#39;detect_cnn_lightnet_image_uris_json&#39;</span><span class="p">,</span>
-            <span class="n">callback_url</span><span class="p">,</span>
-            <span class="n">callback_method</span><span class="p">,</span>
-            <span class="n">callback_detailed</span><span class="p">,</span>
-            <span class="n">lane</span><span class="p">,</span>
-            <span class="n">jobid</span><span class="p">,</span>
-            <span class="o">*</span><span class="n">args</span>
+            <span class="n">action</span><span class="o">=</span><span class="s1">&#39;detect_cnn_lightnet_image_uris_json&#39;</span><span class="p">,</span>
+            <span class="n">callback_url</span><span class="o">=</span><span class="n">callback_url</span><span class="p">,</span>
+            <span class="n">callback_method</span><span class="o">=</span><span class="n">callback_method</span><span class="p">,</span>
+            <span class="n">callback_detailed</span><span class="o">=</span><span class="n">callback_detailed</span><span class="p">,</span>
+            <span class="n">lane</span><span class="o">=</span><span class="n">lane</span><span class="p">,</span>
+            <span class="n">jobid</span><span class="o">=</span><span class="n">jobid</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="c1"># if callback_url is not None:</span>
@@ -979,7 +1014,12 @@
     <span class="n">annots</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">annots</span><span class="p">(</span><span class="n">uuids</span><span class="o">=</span><span class="n">annot_uuid_list</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">annots</span><span class="o">.</span><span class="n">aids</span><span class="p">,)</span>
     <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
-        <span class="s1">&#39;predict_ws_injury_interim_svm&#39;</span><span class="p">,</span> <span class="n">callback_url</span><span class="p">,</span> <span class="n">callback_method</span><span class="p">,</span> <span class="n">lane</span><span class="p">,</span> <span class="n">jobid</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;predict_ws_injury_interim_svm&#39;</span><span class="p">,</span>
+        <span class="n">callback_url</span><span class="o">=</span><span class="n">callback_url</span><span class="p">,</span>
+        <span class="n">callback_method</span><span class="o">=</span><span class="n">callback_method</span><span class="p">,</span>
+        <span class="n">lane</span><span class="o">=</span><span class="n">lane</span><span class="p">,</span>
+        <span class="n">jobid</span><span class="o">=</span><span class="n">jobid</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># if callback_url is not None:</span>
@@ -997,7 +1037,9 @@
 <span class="sd">        Method: GET</span>
 <span class="sd">        URL: /api/engine/query/web/</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span><span class="s1">&#39;load_identification_query_object_worker&#39;</span><span class="p">)</span>
+    <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;load_identification_query_object_worker&#39;</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">jobid</span></div>
 
 
@@ -1009,7 +1051,7 @@
 <span class="sd">        Method: GET</span>
 <span class="sd">        URL: /api/engine/wildbook/sync/</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span><span class="s1">&#39;wildbook_sync&#39;</span><span class="p">)</span>
+    <span class="n">jobid</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">job_manager</span><span class="o">.</span><span class="n">jobiface</span><span class="o">.</span><span class="n">queue_job</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;wildbook_sync&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">jobid</span></div>
 </pre></div>
 
