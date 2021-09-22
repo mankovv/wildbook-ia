@@ -1751,6 +1751,8 @@
     <span class="n">ibs</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">ibs</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_job_status</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ok&#39;</span>
+
     <span class="n">jobs</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;json_result&#39;</span><span class="p">]</span>
     <span class="n">job_list</span> <span class="o">=</span> <span class="p">[]</span>
 
