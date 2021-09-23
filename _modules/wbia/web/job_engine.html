@@ -1407,7 +1407,7 @@
                     <span class="n">kwargs</span> <span class="o">=</span> <span class="n">engine_request</span><span class="p">[</span><span class="s1">&#39;kwargs&#39;</span><span class="p">]</span>
                     <span class="n">callback_url</span> <span class="o">=</span> <span class="n">engine_request</span><span class="p">[</span><span class="s1">&#39;callback_url&#39;</span><span class="p">]</span>
                     <span class="n">callback_method</span> <span class="o">=</span> <span class="n">engine_request</span><span class="p">[</span><span class="s1">&#39;callback_method&#39;</span><span class="p">]</span>
-                    <span class="n">callback_detailed</span> <span class="o">=</span> <span class="n">engine_request</span><span class="p">[</span><span class="s1">&#39;callback_detailed&#39;</span><span class="p">]</span>
+                    <span class="n">callback_detailed</span> <span class="o">=</span> <span class="n">engine_request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;callback_detailed&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
                     <span class="n">request</span> <span class="o">=</span> <span class="n">engine_request</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">]</span>
                     <span class="n">restart_jobid</span> <span class="o">=</span> <span class="n">engine_request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;restart_jobid&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                     <span class="n">restart_jobcounter</span> <span class="o">=</span> <span class="n">engine_request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;restart_jobcounter&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -1642,7 +1642,7 @@
                     <span class="n">kwargs</span> <span class="o">=</span> <span class="n">engine_request</span><span class="p">[</span><span class="s1">&#39;kwargs&#39;</span><span class="p">]</span>
                     <span class="n">callback_url</span> <span class="o">=</span> <span class="n">engine_request</span><span class="p">[</span><span class="s1">&#39;callback_url&#39;</span><span class="p">]</span>
                     <span class="n">callback_method</span> <span class="o">=</span> <span class="n">engine_request</span><span class="p">[</span><span class="s1">&#39;callback_method&#39;</span><span class="p">]</span>
-                    <span class="n">callback_detailed</span> <span class="o">=</span> <span class="n">engine_request</span><span class="p">[</span><span class="s1">&#39;callback_detailed&#39;</span><span class="p">]</span>
+                    <span class="n">callback_detailed</span> <span class="o">=</span> <span class="n">engine_request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;callback_detailed&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
                     <span class="n">lane_</span> <span class="o">=</span> <span class="n">engine_request</span><span class="p">[</span><span class="s1">&#39;lane&#39;</span><span class="p">]</span>
 
                     <span class="k">if</span> <span class="n">VERBOSE_JOBS</span><span class="p">:</span>
@@ -2135,11 +2135,13 @@
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jobid&#39;</span><span class="p">:</span> <span class="n">jobid</span><span class="p">}</span>
+
                 <span class="k">if</span> <span class="n">callback_detailed</span><span class="p">:</span>
                     <span class="n">shelve_value</span> <span class="o">=</span> <span class="n">get_shelve_value</span><span class="p">(</span><span class="n">shelve_output_filepath</span><span class="p">,</span> <span class="s1">&#39;result&#39;</span><span class="p">)</span>
                     <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shelve_value</span><span class="p">[</span><span class="s1">&#39;exec_status&#39;</span><span class="p">]</span>
                     <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;json_result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">shelve_value</span><span class="p">[</span><span class="s1">&#39;json_result&#39;</span><span class="p">])</span>
                     <span class="n">shelve_value</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Release memory</span>
+
                 <span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">callback_url</span><span class="p">,</span>
                     <span class="n">callback_method</span><span class="p">,</span>
