@@ -35,6 +35,7 @@
 
 <span class="c1"># import warning</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">utool</span> <span class="k">as</span> <span class="nn">ut</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -72,7 +73,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">StratifiedGroupKFold</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">shuffle</span><span class="p">,</span> <span class="n">random_state</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">shuffle</span><span class="p">:</span>
+            <span class="n">random_state</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StratifiedGroupKFold</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_make_test_folds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -99,107 +104,74 @@
 <span class="sd">            &gt;&gt;&gt; self = StratifiedGroupKFold(random_state=rng)</span>
 <span class="sd">            &gt;&gt;&gt; skf_list = list(self.split(X=X, y=y, groups=groups))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># if self.shuffle:</span>
-        <span class="c1">#     rng = check_random_state(self.random_state)</span>
-        <span class="c1"># else:</span>
-        <span class="c1">#     rng = self.random_state</span>
-        <span class="n">n_splits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-        <span class="n">n_samples</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="s1">&#39;invalid value&#39;</span><span class="p">)</span>
+            <span class="n">n_splits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">n_samples</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="kn">import</span> <span class="nn">utool</span> <span class="k">as</span> <span class="nn">ut</span>
-
-        <span class="c1"># y_counts = bincount(y_inversed)</span>
-        <span class="c1"># min_classes_ = np.min(y_counts)</span>
-        <span class="c1"># if np.all(self.n_splits &gt; y_counts):</span>
-        <span class="c1">#     raise ValueError(&quot;All the n_groups for individual classes&quot;</span>
-        <span class="c1">#                      &quot; are less than n_splits=%d.&quot;</span>
-        <span class="c1">#                      % (self.n_splits))</span>
-        <span class="c1"># if self.n_splits &gt; min_classes_:</span>
-        <span class="c1">#     warnings.warn((&quot;The least populated class in y has only %d&quot;</span>
-        <span class="c1">#                    &quot; members, which is too few. The minimum&quot;</span>
-        <span class="c1">#                    &quot; number of groups for any class cannot&quot;</span>
-        <span class="c1">#                    &quot; be less than n_splits=%d.&quot;</span>
-        <span class="c1">#                    % (min_classes_, self.n_splits)), Warning)</span>
-
-        <span class="n">unique_y</span><span class="p">,</span> <span class="n">y_inversed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">n_classes</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">unique_y</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">unique_groups</span><span class="p">,</span> <span class="n">group_idxs</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">group_indices</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span>
-        <span class="c1"># grouped_ids = list(grouping.keys())</span>
-        <span class="n">grouped_y</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">apply_grouping</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">group_idxs</span><span class="p">)</span>
-        <span class="n">grouped_y_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="n">n_classes</span><span class="p">)</span> <span class="k">for</span> <span class="n">y_</span> <span class="ow">in</span> <span class="n">grouped_y</span><span class="p">]</span>
-        <span class="p">)</span>
-
-        <span class="n">target_freq</span> <span class="o">=</span> <span class="n">grouped_y_counts</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">target_ratio</span> <span class="o">=</span> <span class="n">target_freq</span> <span class="o">/</span> <span class="n">target_freq</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
-        <span class="c1"># Greedilly choose the split assignment that minimizes the local</span>
-        <span class="c1"># * squared differences in target from actual frequencies</span>
-        <span class="c1"># * and best equalizes the number of items per fold</span>
-        <span class="c1"># Distribute groups with most members first</span>
-        <span class="n">split_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">))</span>
-        <span class="c1"># split_ratios = split_freq / split_freq.sum(axis=1)</span>
-        <span class="n">split_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">split_freq</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">/</span> <span class="n">split_freq</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">split_diffs</span> <span class="o">=</span> <span class="p">((</span><span class="n">split_freq</span> <span class="o">-</span> <span class="n">target_ratio</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">sortx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">grouped_y_counts</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">grouped_splitx</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">group_idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sortx</span><span class="p">):</span>
-            <span class="c1"># logger.info(&#39;---------\n&#39;)</span>
-            <span class="n">group_freq</span> <span class="o">=</span> <span class="n">grouped_y_counts</span><span class="p">[</span><span class="n">group_idx</span><span class="p">]</span>
-            <span class="n">cand_freq</span> <span class="o">=</span> <span class="n">split_freq</span> <span class="o">+</span> <span class="n">group_freq</span>
-            <span class="n">cand_ratio</span> <span class="o">=</span> <span class="n">cand_freq</span> <span class="o">/</span> <span class="n">cand_freq</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
-            <span class="n">cand_diffs</span> <span class="o">=</span> <span class="p">((</span><span class="n">cand_ratio</span> <span class="o">-</span> <span class="n">target_ratio</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-            <span class="c1"># Compute loss</span>
-            <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="c1"># others = np.nan_to_num(split_diffs)</span>
-            <span class="n">other_diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="nb">sum</span><span class="p">(</span><span class="n">split_diffs</span><span class="p">[</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:])</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">split_diffs</span><span class="p">[:</span><span class="n">x</span><span class="p">])</span>
-                    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_splits</span><span class="p">)</span>
-                <span class="p">]</span>
+            <span class="n">unique_y</span><span class="p">,</span> <span class="n">y_inversed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">n_classes</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">unique_y</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">unique_groups</span><span class="p">,</span> <span class="n">group_idxs</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">group_indices</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span>
+            <span class="n">grouped_y</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">apply_grouping</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">group_idxs</span><span class="p">)</span>
+            <span class="n">grouped_y_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="n">n_classes</span><span class="p">)</span> <span class="k">for</span> <span class="n">y_</span> <span class="ow">in</span> <span class="n">grouped_y</span><span class="p">]</span>
             <span class="p">)</span>
-            <span class="c1"># penalize unbalanced splits</span>
-            <span class="n">ratio_loss</span> <span class="o">=</span> <span class="n">other_diffs</span> <span class="o">+</span> <span class="n">cand_diffs</span>
-            <span class="c1"># penalize heavy splits</span>
-            <span class="n">freq_loss</span> <span class="o">=</span> <span class="n">split_freq</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">freq_loss</span> <span class="o">=</span> <span class="n">freq_loss</span> <span class="o">/</span> <span class="n">freq_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-            <span class="n">losses</span> <span class="o">=</span> <span class="n">ratio_loss</span> <span class="o">+</span> <span class="n">freq_loss</span>
-            <span class="c1"># logger.info(&#39;group_freq = %r&#39; % (group_freq,))</span>
-            <span class="c1"># logger.info(&#39;freq_loss = %s&#39; % (ut.repr2(freq_loss, precision=2),))</span>
-            <span class="c1"># logger.info(&#39;ratio_loss = %s&#39; % (ut.repr2(ratio_loss, precision=2),))</span>
-            <span class="c1"># -------</span>
-            <span class="n">splitx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
-            <span class="c1"># logger.info(&#39;losses = %r, splitx=%r&#39; % (losses, splitx))</span>
-            <span class="n">split_freq</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span> <span class="o">=</span> <span class="n">cand_freq</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span>
-            <span class="n">split_ratios</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span> <span class="o">=</span> <span class="n">cand_ratio</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span>
-            <span class="n">split_diffs</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span> <span class="o">=</span> <span class="n">cand_diffs</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span>
-            <span class="n">grouped_splitx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">splitx</span><span class="p">)</span>
 
-            <span class="c1"># if count &gt; 4:</span>
-            <span class="c1">#     break</span>
-            <span class="c1"># else:</span>
-            <span class="c1">#     logger.info(&#39;split_freq = \n&#39; +</span>
-            <span class="c1">#           ut.repr2(split_freq, precision=2, suppress_small=True))</span>
-            <span class="c1">#     logger.info(&#39;target_ratio = \n&#39; +</span>
-            <span class="c1">#           ut.repr2(target_ratio, precision=2, suppress_small=True))</span>
-            <span class="c1">#     logger.info(&#39;split_ratios = \n&#39; +</span>
-            <span class="c1">#           ut.repr2(split_ratios, precision=2, suppress_small=True))</span>
-            <span class="c1">#     logger.info(ut.dict_hist(grouped_splitx))</span>
+            <span class="n">target_freq</span> <span class="o">=</span> <span class="n">grouped_y_counts</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">target_freq</span> <span class="o">=</span> <span class="n">target_freq</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+            <span class="n">target_ratio</span> <span class="o">=</span> <span class="n">target_freq</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">target_freq</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 
-        <span class="c1"># final_ratio_loss = ((split_ratios - target_ratio) ** 2).sum(axis=1)</span>
-        <span class="c1"># logger.info(&#39;split_freq = \n&#39; +</span>
-        <span class="c1">#       ut.repr2(split_freq, precision=3, suppress_small=True))</span>
-        <span class="c1"># logger.info(&#39;target_ratio = \n&#39; +</span>
-        <span class="c1">#       ut.repr2(target_ratio, precision=3, suppress_small=True))</span>
-        <span class="c1"># logger.info(&#39;split_ratios = \n&#39; +</span>
-        <span class="c1">#       ut.repr2(split_ratios, precision=3, suppress_small=True))</span>
-        <span class="c1"># logger.info(ut.dict_hist(grouped_splitx))</span>
+            <span class="c1"># Greedilly choose the split assignment that minimizes the local</span>
+            <span class="c1"># * squared differences in target from actual frequencies</span>
+            <span class="c1"># * and best equalizes the number of items per fold</span>
+            <span class="c1"># Distribute groups with most members first</span>
+            <span class="n">split_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">))</span>
+            <span class="c1"># split_ratios = split_freq / split_freq.sum(axis=1)</span>
+            <span class="n">split_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">split_freq</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">/</span> <span class="n">split_freq</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">split_diffs</span> <span class="o">=</span> <span class="p">((</span><span class="n">split_freq</span> <span class="o">-</span> <span class="n">target_ratio</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">sortx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">grouped_y_counts</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">grouped_splitx</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="n">test_folds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">group_idx</span><span class="p">,</span> <span class="n">splitx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sortx</span><span class="p">,</span> <span class="n">grouped_splitx</span><span class="p">):</span>
-            <span class="n">idxs</span> <span class="o">=</span> <span class="n">group_idxs</span><span class="p">[</span><span class="n">group_idx</span><span class="p">]</span>
-            <span class="n">test_folds</span><span class="p">[</span><span class="n">idxs</span><span class="p">]</span> <span class="o">=</span> <span class="n">splitx</span>
+            <span class="c1"># import ubelt as ub</span>
+            <span class="c1"># print(ub.repr2(grouped_y_counts, nl=-1))</span>
+            <span class="c1"># print(&#39;target_ratio = {!r}&#39;.format(target_ratio))</span>
+
+            <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">group_idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sortx</span><span class="p">):</span>
+                <span class="c1"># print(&#39;---------\n&#39;)</span>
+                <span class="n">group_freq</span> <span class="o">=</span> <span class="n">grouped_y_counts</span><span class="p">[</span><span class="n">group_idx</span><span class="p">]</span>
+                <span class="n">cand_freq</span> <span class="o">=</span> <span class="n">split_freq</span> <span class="o">+</span> <span class="n">group_freq</span>
+                <span class="n">cand_freq</span> <span class="o">=</span> <span class="n">cand_freq</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+                <span class="n">cand_ratio</span> <span class="o">=</span> <span class="n">cand_freq</span> <span class="o">/</span> <span class="n">cand_freq</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="n">cand_diffs</span> <span class="o">=</span> <span class="p">((</span><span class="n">cand_ratio</span> <span class="o">-</span> <span class="n">target_ratio</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="c1"># Compute loss</span>
+                <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="c1"># others = np.nan_to_num(split_diffs)</span>
+                <span class="n">other_diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="nb">sum</span><span class="p">(</span><span class="n">split_diffs</span><span class="p">[</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:])</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">split_diffs</span><span class="p">[:</span><span class="n">x</span><span class="p">])</span>
+                        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_splits</span><span class="p">)</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+                <span class="c1"># penalize unbalanced splits</span>
+                <span class="n">ratio_loss</span> <span class="o">=</span> <span class="n">other_diffs</span> <span class="o">+</span> <span class="n">cand_diffs</span>
+                <span class="c1"># penalize heavy splits</span>
+                <span class="n">freq_loss</span> <span class="o">=</span> <span class="n">split_freq</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">freq_loss</span> <span class="o">=</span> <span class="n">freq_loss</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+                <span class="n">freq_loss</span> <span class="o">=</span> <span class="n">freq_loss</span> <span class="o">/</span> <span class="n">freq_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                <span class="n">losses</span> <span class="o">=</span> <span class="n">ratio_loss</span> <span class="o">+</span> <span class="n">freq_loss</span>
+                <span class="c1"># -------</span>
+                <span class="n">splitx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+                <span class="c1"># print(&#39;losses = %r, splitx=%r&#39; % (losses, splitx))</span>
+                <span class="n">split_freq</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span> <span class="o">=</span> <span class="n">cand_freq</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span>
+                <span class="n">split_ratios</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span> <span class="o">=</span> <span class="n">cand_ratio</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span>
+                <span class="n">split_diffs</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span> <span class="o">=</span> <span class="n">cand_diffs</span><span class="p">[</span><span class="n">splitx</span><span class="p">]</span>
+                <span class="n">grouped_splitx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">splitx</span><span class="p">)</span>
+
+            <span class="n">test_folds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">group_idx</span><span class="p">,</span> <span class="n">splitx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sortx</span><span class="p">,</span> <span class="n">grouped_splitx</span><span class="p">):</span>
+                <span class="n">idxs</span> <span class="o">=</span> <span class="n">group_idxs</span><span class="p">[</span><span class="n">group_idx</span><span class="p">]</span>
+                <span class="n">test_folds</span><span class="p">[</span><span class="n">idxs</span><span class="p">]</span> <span class="o">=</span> <span class="n">splitx</span>
 
         <span class="k">return</span> <span class="n">test_folds</span>
 
@@ -769,7 +741,7 @@
             <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">_collect_probas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Collect results from clf.predict calls. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Collect results from clf.predict calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_idx_mappers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">probas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clf_list</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
@@ -786,7 +758,7 @@
         <span class="k">return</span> <span class="n">probas</span>
 
 <div class="viewcode-block" id="PrefitEstimatorEnsemble.predict_proba"><a class="viewcode-back" href="../../../../wbia.algo.verif.html#wbia.algo.verif.sklearn_utils.PrefitEstimatorEnsemble.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Predict class probabilities for X in &#39;soft&#39; voting &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Predict class probabilities for X in &#39;soft&#39; voting&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting</span> <span class="o">==</span> <span class="s1">&#39;hard&#39;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
                 <span class="s1">&#39;predict_proba is not available when&#39;</span> <span class="s1">&#39; voting=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">voting</span>
@@ -820,7 +792,7 @@
         <span class="k">return</span> <span class="n">maj</span></div>
 
     <span class="k">def</span> <span class="nf">_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Collect results from clf.predict calls. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Collect results from clf.predict calls.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clf_list</span><span class="p">])</span><span class="o">.</span><span class="n">T</span></div>
 
 
