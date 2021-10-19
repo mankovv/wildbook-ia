@@ -782,7 +782,7 @@
         <span class="k">if</span> <span class="n">cache_tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">GLOBAL_PRED_CACHE_DICT</span><span class="p">:</span>
             <span class="n">dirty_gids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gid</span><span class="p">)</span>
 
-    <span class="n">pred_dict_dirty</span> <span class="o">=</span> <span class="n">localizer_parse_pred_dirty</span><span class="p">(</span>
+    <span class="n">pred_dict_dirty</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">localizer_parse_pred_dirty</span><span class="p">(</span>
         <span class="n">dirty_gids</span><span class="p">,</span> <span class="n">species_mapping_</span><span class="o">=</span><span class="n">species_mapping_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span>
 
