@@ -63,6 +63,9 @@
     <span class="vm">__name__</span>
 <span class="p">)</span>
 
+<span class="n">GLOBAL_GT_CACHE_DICT</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">GLOBAL_PRED_CACHE_DICT</span> <span class="o">=</span> <span class="p">{}</span>
+
 
 <span class="k">def</span> <span class="nf">_resize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">t_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -582,6 +585,11 @@
 
 
 <div class="viewcode-block" id="general_parse_gt"><a class="viewcode-back" href="../../../wbia.other.html#wbia.other.detectfuncs.general_parse_gt">[docs]</a><span class="k">def</span> <span class="nf">general_parse_gt</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">test_gid_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">GLOBAL_GT_CACHE_DICT</span>
+
+    <span class="n">kwargs_str</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">repr3</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">kwargs_cfgstr</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">hash_data</span><span class="p">(</span><span class="n">kwargs_str</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">test_gid_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">test_gid_list</span> <span class="o">=</span> <span class="n">general_get_imageset_gids</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="s1">&#39;TEST_SET&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -591,10 +599,17 @@
     <span class="n">species_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
     <span class="n">gt_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">gid</span><span class="p">,</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gid_list</span><span class="p">,</span> <span class="n">uuid_list</span><span class="p">):</span>
-        <span class="n">aid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_image_aids</span><span class="p">(</span><span class="n">gid</span><span class="p">)</span>
-        <span class="n">gt_list</span><span class="p">,</span> <span class="n">species_set</span> <span class="o">=</span> <span class="n">general_parse_gt_annots</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">aid_list</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">species_set</span> <span class="o">=</span> <span class="n">species_set</span> <span class="o">|</span> <span class="n">species_set</span>
-        <span class="n">gt_dict</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">gt_list</span>
+        <span class="n">cache_tag</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">uuid</span><span class="p">,</span>
+            <span class="n">kwargs_cfgstr</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">cache_tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">GLOBAL_GT_CACHE_DICT</span><span class="p">:</span>
+            <span class="n">aid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_image_aids</span><span class="p">(</span><span class="n">gid</span><span class="p">)</span>
+            <span class="n">gt_list</span><span class="p">,</span> <span class="n">species_set</span> <span class="o">=</span> <span class="n">general_parse_gt_annots</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">aid_list</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">species_set</span> <span class="o">=</span> <span class="n">species_set</span> <span class="o">|</span> <span class="n">species_set</span>
+            <span class="n">GLOBAL_GT_CACHE_DICT</span><span class="p">[</span><span class="n">cache_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">gt_list</span>
+
+        <span class="n">gt_dict</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">GLOBAL_GT_CACHE_DICT</span><span class="p">[</span><span class="n">cache_tag</span><span class="p">]</span>
 
     <span class="c1"># logger.info(&#39;General Parse GT species_set = %r&#39; % (species_set, ))</span>
     <span class="k">return</span> <span class="n">gt_dict</span></div>
@@ -603,21 +618,11 @@
 <span class="c1">##########################################################################################</span>
 
 
-<div class="viewcode-block" id="localizer_parse_pred"><a class="viewcode-back" href="../../../wbia.other.html#wbia.other.detectfuncs.localizer_parse_pred">[docs]</a><span class="k">def</span> <span class="nf">localizer_parse_pred</span><span class="p">(</span>
-    <span class="n">ibs</span><span class="p">,</span> <span class="n">test_gid_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">species_mapping</span><span class="o">=</span><span class="p">{},</span> <span class="n">pred_species_mapping</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span>
-<span class="p">):</span>
+<div class="viewcode-block" id="localizer_parse_pred_dirty"><a class="viewcode-back" href="../../../wbia.other.html#wbia.other.detectfuncs.localizer_parse_pred_dirty">[docs]</a><span class="k">def</span> <span class="nf">localizer_parse_pred_dirty</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">test_gid_list</span><span class="p">,</span> <span class="n">species_mapping_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
     <span class="n">depc</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">depc_image</span>
 
-    <span class="n">species_mapping_</span> <span class="o">=</span> <span class="n">species_mapping</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">species_mapping_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pred_species_mapping</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="s1">&#39;feature2_algo&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;feature2_algo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;resnet&#39;</span>
-
-    <span class="k">if</span> <span class="n">test_gid_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">test_gid_list</span> <span class="o">=</span> <span class="n">general_get_imageset_gids</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="s1">&#39;TEST_SET&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">uuid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_image_uuids</span><span class="p">(</span><span class="n">test_gid_list</span><span class="p">)</span>
-
     <span class="n">size_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_image_sizes</span><span class="p">(</span><span class="n">test_gid_list</span><span class="p">)</span>
 
     <span class="c1"># Unsure, but we need to call this multiple times?  Lazy loading bug?</span>
@@ -745,6 +750,58 @@
     <span class="n">pred_dict</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">uuid_</span><span class="p">:</span> <span class="n">result_list</span> <span class="k">for</span> <span class="n">uuid_</span><span class="p">,</span> <span class="n">result_list</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">uuid_list</span><span class="p">,</span> <span class="n">results_list</span><span class="p">)</span>
     <span class="p">}</span>
+    <span class="k">return</span> <span class="n">pred_dict</span></div>
+
+
+<div class="viewcode-block" id="localizer_parse_pred"><a class="viewcode-back" href="../../../wbia.other.html#wbia.other.detectfuncs.localizer_parse_pred">[docs]</a><span class="k">def</span> <span class="nf">localizer_parse_pred</span><span class="p">(</span>
+    <span class="n">ibs</span><span class="p">,</span> <span class="n">test_gid_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">species_mapping</span><span class="o">=</span><span class="p">{},</span> <span class="n">pred_species_mapping</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
+    <span class="k">global</span> <span class="n">GLOBAL_PRED_CACHE_DICT</span>
+
+    <span class="k">if</span> <span class="s1">&#39;feature2_algo&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;feature2_algo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;resnet&#39;</span>
+
+    <span class="n">species_mapping_</span> <span class="o">=</span> <span class="n">species_mapping</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">species_mapping_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pred_species_mapping</span><span class="p">)</span>
+
+    <span class="n">kwargs_str</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">repr3</span><span class="p">([</span><span class="n">species_mapping_</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">])</span>
+    <span class="n">kwargs_cfgstr</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">hash_data</span><span class="p">(</span><span class="n">kwargs_str</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">test_gid_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">test_gid_list</span> <span class="o">=</span> <span class="n">general_get_imageset_gids</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="s1">&#39;TEST_SET&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">uuid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_image_uuids</span><span class="p">(</span><span class="n">test_gid_list</span><span class="p">)</span>
+    <span class="n">gid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_image_gids_from_uuid</span><span class="p">(</span><span class="n">uuid_list</span><span class="p">)</span>
+
+    <span class="n">dirty_gids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">gid</span><span class="p">,</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gid_list</span><span class="p">,</span> <span class="n">uuid_list</span><span class="p">):</span>
+        <span class="n">cache_tag</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">uuid</span><span class="p">,</span>
+            <span class="n">kwargs_cfgstr</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">cache_tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">GLOBAL_PRED_CACHE_DICT</span><span class="p">:</span>
+            <span class="n">dirty_gids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gid</span><span class="p">)</span>
+
+    <span class="n">pred_dict_dirty</span> <span class="o">=</span> <span class="n">localizer_parse_pred_dirty</span><span class="p">(</span>
+        <span class="n">dirty_gids</span><span class="p">,</span> <span class="n">species_mapping_</span><span class="o">=</span><span class="n">species_mapping_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">dirty_uuid</span> <span class="ow">in</span> <span class="n">pred_dict_dirty</span><span class="p">:</span>
+        <span class="n">cache_tag</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">dirty_uuid</span><span class="p">,</span>
+            <span class="n">kwargs_cfgstr</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">GLOBAL_PRED_CACHE_DICT</span><span class="p">[</span><span class="n">cache_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred_dict_dirty</span><span class="p">[</span><span class="n">dirty_uuid</span><span class="p">]</span>
+
+    <span class="n">pred_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">gid</span><span class="p">,</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gid_list</span><span class="p">,</span> <span class="n">uuid_list</span><span class="p">):</span>
+        <span class="n">cache_tag</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">uuid</span><span class="p">,</span>
+            <span class="n">kwargs_cfgstr</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">cache_tag</span> <span class="ow">in</span> <span class="n">GLOBAL_PRED_CACHE_DICT</span>
+        <span class="n">pred_dict</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">GLOBAL_PRED_CACHE_DICT</span><span class="p">[</span><span class="n">cache_tag</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">pred_dict</span></div>
 
 
