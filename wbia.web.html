@@ -2888,20 +2888,6 @@ python -m wbia.tag_funcs –exec-start_web_annot_groupreview –db GIRM_Master1<
 </div>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="wbia.web.app.tst_html_error">
-<span class="sig-prename descclassname"><span class="pre">wbia.web.app.</span></span><span class="sig-name descname"><span class="pre">tst_html_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/app.html#tst_html_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.app.tst_html_error" title="Permalink to this definition">¶</a></dt>
-<dd><p>This test will show what our current errors look like</p>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">wbia</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">wbia</span><span class="o">.</span><span class="n">opendb_with_web</span><span class="p">(</span><span class="s1">&#39;testdb1&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/api/image/imagesettext/?__format__=True&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
-<span class="go">&lt;WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]&gt;</span>
-</pre></div>
-</div>
-</dd></dl>
-
 </section>
 <section id="module-wbia.web.appfuncs">
 <span id="wbia-web-appfuncs-module"></span><h2>wbia.web.appfuncs module<a class="headerlink" href="#module-wbia.web.appfuncs" title="Permalink to this headline">¶</a></h2>
