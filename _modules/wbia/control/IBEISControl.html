@@ -185,10 +185,10 @@
         <span class="p">((</span><span class="s1">&#39;--no-orient&#39;</span><span class="p">,</span> <span class="s1">&#39;--noorient&#39;</span><span class="p">),</span> <span class="s1">&#39;wbia_orientation._plugin&#39;</span><span class="p">),</span>
     <span class="p">]</span>
 
-<span class="c1"># if ut.get_argflag(&#39;--pie&#39;):</span>
-<span class="c1">#     AUTOLOAD_PLUGIN_MODNAMES += [</span>
-<span class="c1">#         ((&#39;--no-pie&#39;, &#39;--nopie&#39;), &#39;wbia_pie._plugin&#39;),</span>
-<span class="c1">#     ]</span>
+<span class="k">if</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_argflag</span><span class="p">(</span><span class="s1">&#39;--pie&#39;</span><span class="p">):</span>
+    <span class="n">AUTOLOAD_PLUGIN_MODNAMES</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="p">((</span><span class="s1">&#39;--no-pie&#39;</span><span class="p">,</span> <span class="s1">&#39;--nopie&#39;</span><span class="p">),</span> <span class="s1">&#39;wbia_pie._plugin&#39;</span><span class="p">),</span>
+    <span class="p">]</span>
 
 
 <span class="k">if</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_argflag</span><span class="p">(</span><span class="s1">&#39;--pie-v2&#39;</span><span class="p">):</span>
