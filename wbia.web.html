@@ -481,56 +481,6 @@ URL:    /api/detect/cnn/yolo/exists/</p>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="wbia.web.apis_detect.detect_random_forest">
-<span class="sig-prename descclassname"><span class="pre">wbia.web.apis_detect.</span></span><span class="sig-name descname"><span class="pre">detect_random_forest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ibs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gid_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/apis_detect.html#detect_random_forest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.apis_detect.detect_random_forest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run animal detection in each image. Adds annotations to the database as they are found.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>gid_list</strong> (<em>list</em>) – list of image ids to run detection on</p></li>
-<li><p><strong>species</strong> (<em>str</em>) – string text of the species to identify</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>list of lists of annotation ids detected in each</dt><dd><p>image</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>aids_list (list)</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>CommandLine:</dt><dd><p>python -m wbia.web.apis_detect –test-detect_random_forest –show</p>
-</dd>
-<dt>RESTful:</dt><dd><p>Method: PUT, GET
-URL:    /api/detect/randomforest/</p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># DISABLE_DOCTEST</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">wbia.web.apis_detect</span> <span class="kn">import</span> <span class="o">*</span>  <span class="c1"># NOQA</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">wbia</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ibs</span> <span class="o">=</span> <span class="n">wbia</span><span class="o">.</span><span class="n">opendb</span><span class="p">(</span><span class="s1">&#39;testdb1&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">gid_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">get_valid_gids</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">species</span> <span class="o">=</span> <span class="n">wbia</span><span class="o">.</span><span class="n">const</span><span class="o">.</span><span class="n">TEST_SPECIES</span><span class="o">.</span><span class="n">ZEB_PLAIN</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aids_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">detect_random_forest</span><span class="p">(</span><span class="n">gid_list</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Visualize results</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">ut</span><span class="o">.</span><span class="n">show_was_requested</span><span class="p">():</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="kn">import</span> <span class="nn">wbia.plottool</span> <span class="k">as</span> <span class="nn">pt</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="kn">from</span> <span class="nn">wbia.viz</span> <span class="kn">import</span> <span class="n">viz_image</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="k">for</span> <span class="n">fnum</span><span class="p">,</span> <span class="n">gid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gid_list</span><span class="p">):</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="n">viz_image</span><span class="o">.</span><span class="n">show_image</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid</span><span class="p">,</span> <span class="n">fnum</span><span class="o">=</span><span class="n">fnum</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">pt</span><span class="o">.</span><span class="n">show_if_requested</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Remove newly detected annotations</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ibs</span><span class="o">.</span><span class="n">delete_annots</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">aids_list</span><span class="p">))</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="wbia.web.apis_detect.detect_ws_injury">
 <span class="sig-prename descclassname"><span class="pre">wbia.web.apis_detect.</span></span><span class="sig-name descname"><span class="pre">detect_ws_injury</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ibs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gid_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/apis_detect.html#detect_ws_injury"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.apis_detect.detect_ws_injury" title="Permalink to this definition">¶</a></dt>
 <dd><p>Classify if a whale shark is injured.</p>
@@ -1110,7 +1060,7 @@ URL: /api/engine/wildbook/sync/</p>
 <p>Dependencies: flask, tornado</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.apis_json.ParseError">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.apis_json.</span></span><span class="sig-name descname"><span class="pre">ParseError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/apis_json.html#ParseError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.apis_json.ParseError" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.apis_json.</span></span><span class="sig-name descname"><span class="pre">ParseError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/apis_json.html#ParseError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.apis_json.ParseError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 
@@ -3854,7 +3804,7 @@ python -m wbia.web.apis_query review_graph_match_html –show –domain=localhos
 <p>Dependencies: flask, tornado</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.app.TimedWSGIContainer">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.app.</span></span><span class="sig-name descname"><span class="pre">TimedWSGIContainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wsgi_application</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">WSGIAppType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/app.html#TimedWSGIContainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.app.TimedWSGIContainer" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.app.</span></span><span class="sig-name descname"><span class="pre">TimedWSGIContainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wsgi_application</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WSGIAppType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/app.html#TimedWSGIContainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.app.TimedWSGIContainer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tornado.wsgi.WSGIContainer</span></code></p>
 </dd></dl>
 
@@ -3918,7 +3868,7 @@ python -m wbia.tag_funcs –exec-start_web_annot_groupreview –db GIRM_Master1<
 <span id="wbia-web-appfuncs-module"></span><h2>wbia.web.appfuncs module<a class="headerlink" href="#module-wbia.web.appfuncs" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.appfuncs.NavbarClass">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.appfuncs.</span></span><span class="sig-name descname"><span class="pre">NavbarClass</span></span><a class="reference internal" href="_modules/wbia/web/appfuncs.html#NavbarClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.appfuncs.NavbarClass" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.appfuncs.</span></span><span class="sig-name descname"><span class="pre">NavbarClass</span></span><a class="reference internal" href="_modules/wbia/web/appfuncs.html#NavbarClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.appfuncs.NavbarClass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 
@@ -4050,11 +4000,11 @@ python -m wbia.tag_funcs –exec-start_web_annot_groupreview –db GIRM_Master1<
 <span id="wbia-web-graph-server-module"></span><h2>wbia.web.graph_server module<a class="headerlink" href="#module-wbia.web.graph_server" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.graph_server.Actor">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">Actor</span></span><a class="reference internal" href="_modules/wbia/web/graph_server.html#Actor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.Actor" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">Actor</span></span><a class="reference internal" href="_modules/wbia/web/graph_server.html#Actor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.Actor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="wbia.web.graph_server.Actor.executor">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">executor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#Actor.executor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.Actor.executor" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#Actor.executor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.Actor.executor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an asychronous instance of this Actor and returns the executor
 to manage it.</p>
 </dd></dl>
@@ -4078,7 +4028,7 @@ when the message was posted to this actor by the executor.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.graph_server.GraphActor">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">GraphActor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#GraphActor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.GraphActor" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">GraphActor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#GraphActor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.GraphActor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#wbia.web.graph_server.ThreadActor" title="wbia.web.graph_server.ThreadActor"><code class="xref py py-class docutils literal notranslate"><span class="pre">wbia.web.graph_server.ThreadActor</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="wbia.web.graph_server.GraphActor.add_aids">
@@ -4133,7 +4083,7 @@ when the message was posted to this actor by the executor.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.graph_server.GraphAlgorithmActor">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">GraphAlgorithmActor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#GraphAlgorithmActor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.GraphAlgorithmActor" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">GraphAlgorithmActor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#GraphAlgorithmActor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.GraphAlgorithmActor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#wbia.web.graph_server.GraphActor" title="wbia.web.graph_server.GraphActor"><code class="xref py py-class docutils literal notranslate"><span class="pre">wbia.web.graph_server.GraphActor</span></code></a></p>
 <dl>
 <dt>CommandLine:</dt><dd><p>python -m wbia.web.graph_server GraphAlgorithmActor</p>
@@ -4231,7 +4181,7 @@ when the message was posted to this actor by the executor.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.graph_server.GraphAlgorithmClient">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">GraphAlgorithmClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actor_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imagesets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callbacks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoinit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#GraphAlgorithmClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.GraphAlgorithmClient" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">GraphAlgorithmClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actor_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imagesets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callbacks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoinit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#GraphAlgorithmClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.GraphAlgorithmClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#wbia.web.graph_server.GraphClient" title="wbia.web.graph_server.GraphClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">wbia.web.graph_server.GraphClient</span></code></a></p>
 <dl class="simple">
 <dt>CommandLine:</dt><dd><p>python -m wbia.web.graph_server GraphAlgorithmClient</p>
@@ -4323,7 +4273,7 @@ This function is often injected as rrr of classes</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.graph_server.GraphClient">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">GraphClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actor_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imagesets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callbacks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoinit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#GraphClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.GraphClient" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">GraphClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actor_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imagesets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callbacks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoinit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#GraphClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.GraphClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="wbia.web.graph_server.GraphClient.actor_cls">
@@ -4397,18 +4347,20 @@ This function is often injected as rrr of classes</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.graph_server.ProcessActor">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">ProcessActor</span></span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ProcessActor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ProcessActor" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">ProcessActor</span></span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ProcessActor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ProcessActor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#wbia.web.graph_server.Actor" title="wbia.web.graph_server.Actor"><code class="xref py py-class docutils literal notranslate"><span class="pre">wbia.web.graph_server.Actor</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="wbia.web.graph_server.ProcessActor.executor">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">executor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ProcessActor.executor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ProcessActor.executor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ProcessActor.executor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ProcessActor.executor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an asychronous instance of this Actor and returns the executor
+to manage it.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.graph_server.ProcessActorExecutor">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">ProcessActorExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actor_class</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ProcessActorExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ProcessActorExecutor" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">ProcessActorExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actor_class</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ProcessActorExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ProcessActorExecutor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">concurrent.futures.process.ProcessPoolExecutor</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="wbia.web.graph_server.ProcessActorExecutor.post">
@@ -4419,18 +4371,20 @@ This function is often injected as rrr of classes</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.graph_server.ThreadActor">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">ThreadActor</span></span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ThreadActor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ThreadActor" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">ThreadActor</span></span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ThreadActor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ThreadActor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#wbia.web.graph_server.Actor" title="wbia.web.graph_server.Actor"><code class="xref py py-class docutils literal notranslate"><span class="pre">wbia.web.graph_server.Actor</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="wbia.web.graph_server.ThreadActor.executor">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">executor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ThreadActor.executor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ThreadActor.executor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ThreadActor.executor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ThreadActor.executor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an asychronous instance of this Actor and returns the executor
+to manage it.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.graph_server.ThreadedActorExecutor">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">ThreadedActorExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actor_class</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ThreadedActorExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ThreadedActorExecutor" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.graph_server.</span></span><span class="sig-name descname"><span class="pre">ThreadedActorExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actor_class</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/graph_server.html#ThreadedActorExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.graph_server.ThreadedActorExecutor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">concurrent.futures.thread.ThreadPoolExecutor</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="wbia.web.graph_server.ThreadedActorExecutor.post">
@@ -4509,7 +4463,7 @@ python -m wbia.web.job_engine job_engine_tester –bg –only-engine –fg-engin
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.job_engine.JobBackend">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.job_engine.</span></span><span class="sig-name descname"><span class="pre">JobBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/job_engine.html#JobBackend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.job_engine.JobBackend" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.job_engine.</span></span><span class="sig-name descname"><span class="pre">JobBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/job_engine.html#JobBackend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.job_engine.JobBackend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="wbia.web.job_engine.JobBackend.get_process_alive_status">
@@ -4525,7 +4479,7 @@ python -m wbia.web.job_engine job_engine_tester –bg –only-engine –fg-engin
 
 <dl class="py class">
 <dt class="sig sig-object py" id="wbia.web.job_engine.JobInterface">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">wbia.web.job_engine.</span></span><span class="sig-name descname"><span class="pre">JobInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ibs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/job_engine.html#JobInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.job_engine.JobInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wbia.web.job_engine.</span></span><span class="sig-name descname"><span class="pre">JobInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ibs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/job_engine.html#JobInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.job_engine.JobInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="wbia.web.job_engine.JobInterface.get_job_id_list">
@@ -4837,7 +4791,7 @@ python -m wbia.web.job_engine job_engine_tester –fg</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="wbia.web.job_engine.rcv_multipart_json">
-<span class="sig-prename descclassname"><span class="pre">wbia.web.job_engine.</span></span><span class="sig-name descname"><span class="pre">rcv_multipart_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sock</span></em>, <em class="sig-param"><span class="pre">num=2</span></em>, <em class="sig-param"><span class="pre">print=&lt;function</span> <span class="pre">make_module_print_func.&lt;locals&gt;.print&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/job_engine.html#rcv_multipart_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.job_engine.rcv_multipart_json" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">wbia.web.job_engine.</span></span><span class="sig-name descname"><span class="pre">rcv_multipart_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num=2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print=&lt;function</span> <span class="pre">make_module_print_func.&lt;locals&gt;.print&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/wbia/web/job_engine.html#rcv_multipart_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#wbia.web.job_engine.rcv_multipart_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>helper</p>
 </dd></dl>
 
@@ -5789,7 +5743,7 @@ python -m wbia.web.app –exec-review_quality –db GIRM_Master1</p>
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

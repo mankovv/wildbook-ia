@@ -462,7 +462,7 @@
 
 
 <div class="viewcode-block" id="update_figsize"><a class="viewcode-back" href="../../../wbia.plottool.html#wbia.plottool.draw_func2.update_figsize">[docs]</a><span class="k">def</span> <span class="nf">update_figsize</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot; updates figsize based on command line &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;updates figsize based on command line&quot;&quot;&quot;</span>
     <span class="n">figsize</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_argval</span><span class="p">(</span><span class="s1">&#39;--figsize&#39;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">figsize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Enforce inches and DPI</span>
@@ -1431,7 +1431,7 @@
 
 
 <div class="viewcode-block" id="get_axis_xy_width_height"><a class="viewcode-back" href="../../../wbia.plottool.html#wbia.plottool.draw_func2.get_axis_xy_width_height">[docs]</a><span class="k">def</span> <span class="nf">get_axis_xy_width_height</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xaug</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">yaug</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">waug</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">haug</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; gets geometry of a subplot &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;gets geometry of a subplot&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ax</span> <span class="o">=</span> <span class="n">gca</span><span class="p">()</span>
     <span class="n">autoAxis</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">()</span>
@@ -1801,7 +1801,10 @@
         <span class="n">fig</span> <span class="o">=</span> <span class="n">gcf</span><span class="p">()</span>
     <span class="n">subplotpars</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">subplotpars</span>
     <span class="n">adjust_dict</span> <span class="o">=</span> <span class="n">subplotpars</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="k">del</span> <span class="n">adjust_dict</span><span class="p">[</span><span class="s1">&#39;validate&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;validate&#39;</span> <span class="ow">in</span> <span class="n">adjust_dict</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">adjust_dict</span><span class="p">[</span><span class="s1">&#39;validate&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;_validate&#39;</span> <span class="ow">in</span> <span class="n">adjust_dict</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">adjust_dict</span><span class="p">[</span><span class="s1">&#39;_validate&#39;</span><span class="p">]</span>
     <span class="n">adjust_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">use_argv</span><span class="p">:</span>
         <span class="c1"># hack to take args from commandline</span>
@@ -1847,7 +1850,7 @@
 
 
 <div class="viewcode-block" id="absolute_lbl"><a class="viewcode-back" href="../../../wbia.plottool.html#wbia.plottool.draw_func2.absolute_lbl">[docs]</a><span class="k">def</span> <span class="nf">absolute_lbl</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">y_</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">roffset</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.02</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; alternative to relative text &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;alternative to relative text&quot;&quot;&quot;</span>
     <span class="n">txtargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
         <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span>
@@ -2800,7 +2803,7 @@
 
 
 <div class="viewcode-block" id="ensure_divider"><a class="viewcode-back" href="../../../wbia.plottool.html#wbia.plottool.draw_func2.ensure_divider">[docs]</a><span class="k">def</span> <span class="nf">ensure_divider</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns previously constructed divider or creates one &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Returns previously constructed divider or creates one&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">wbia.plottool</span> <span class="kn">import</span> <span class="n">plot_helpers</span> <span class="k">as</span> <span class="n">ph</span>
 
     <span class="n">divider</span> <span class="o">=</span> <span class="n">ph</span><span class="o">.</span><span class="n">get_plotdat</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">DF2_DIVIDER_KEY</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -2812,7 +2815,7 @@
         <span class="k">def</span> <span class="nf">df2_append_axes</span><span class="p">(</span>
             <span class="n">divider</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">add_to_figure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot; override divider add axes to register the divided axes &quot;&quot;&quot;</span>
+            <span class="sd">&quot;&quot;&quot;override divider add axes to register the divided axes&quot;&quot;&quot;</span>
             <span class="n">div_axes</span> <span class="o">=</span> <span class="n">ph</span><span class="o">.</span><span class="n">get_plotdat</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;df2_div_axes&#39;</span><span class="p">,</span> <span class="p">[])</span>
             <span class="n">new_ax</span> <span class="o">=</span> <span class="n">orig_append_axes</span><span class="p">(</span>
                 <span class="n">position</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="n">pad</span><span class="p">,</span> <span class="n">add_to_figure</span><span class="o">=</span><span class="n">add_to_figure</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -4298,7 +4301,7 @@
 
 
 <div class="viewcode-block" id="draw_boxedX"><a class="viewcode-back" href="../../../wbia.plottool.html#wbia.plottool.draw_func2.draw_boxedX">[docs]</a><span class="k">def</span> <span class="nf">draw_boxedX</span><span class="p">(</span><span class="n">xywh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">RED</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; draws a big red x &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;draws a big red x&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ax</span> <span class="o">=</span> <span class="n">gca</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">xywh</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -4529,7 +4532,7 @@
 
 
 <div class="viewcode-block" id="remove_patches"><a class="viewcode-back" href="../../../wbia.plottool.html#wbia.plottool.draw_func2.remove_patches">[docs]</a><span class="k">def</span> <span class="nf">remove_patches</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; deletes patches from axes &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;deletes patches from axes&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ax</span> <span class="o">=</span> <span class="n">gca</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">patch</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">patches</span><span class="p">:</span>
@@ -5055,7 +5058,7 @@
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -83,65 +83,65 @@
     <span class="k">return</span> <span class="n">wic_cnn</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="detect_random_forest"><a class="viewcode-back" href="../../../wbia.web.html#wbia.web.apis_detect.detect_random_forest">[docs]</a><span class="nd">@register_ibs_method</span>
-<span class="nd">@accessor_decors</span><span class="o">.</span><span class="n">getter_1to1</span>
-<span class="nd">@register_api</span><span class="p">(</span><span class="s1">&#39;/api/detect/randomforest/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="s1">&#39;GET&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">detect_random_forest</span><span class="p">(</span><span class="n">ibs</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Run animal detection in each image. Adds annotations to the database as they are found.</span>
+<span class="c1"># @register_ibs_method</span>
+<span class="c1"># @accessor_decors.getter_1to1</span>
+<span class="c1"># @register_api(&#39;/api/detect/randomforest/&#39;, methods=[&#39;PUT&#39;, &#39;GET&#39;])</span>
+<span class="c1"># def detect_random_forest(ibs, gid_list, species, commit=True, **kwargs):</span>
+<span class="c1">#     &quot;&quot;&quot;Run animal detection in each image. Adds annotations to the database as they are found.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        gid_list (list): list of image ids to run detection on</span>
-<span class="sd">        species (str): string text of the species to identify</span>
+<span class="c1">#     Args:</span>
+<span class="c1">#         gid_list (list): list of image ids to run detection on</span>
+<span class="c1">#         species (str): string text of the species to identify</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        aids_list (list): list of lists of annotation ids detected in each</span>
-<span class="sd">            image</span>
+<span class="c1">#     Returns:</span>
+<span class="c1">#         aids_list (list): list of lists of annotation ids detected in each</span>
+<span class="c1">#             image</span>
 
-<span class="sd">    CommandLine:</span>
-<span class="sd">        python -m wbia.web.apis_detect --test-detect_random_forest --show</span>
+<span class="c1">#     CommandLine:</span>
+<span class="c1">#         python -m wbia.web.apis_detect --test-detect_random_forest --show</span>
 
-<span class="sd">    RESTful:</span>
-<span class="sd">        Method: PUT, GET</span>
-<span class="sd">        URL:    /api/detect/randomforest/</span>
+<span class="c1">#     RESTful:</span>
+<span class="c1">#         Method: PUT, GET</span>
+<span class="c1">#         URL:    /api/detect/randomforest/</span>
 
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; # DISABLE_DOCTEST</span>
-<span class="sd">        &gt;&gt;&gt; from wbia.web.apis_detect import *  # NOQA</span>
-<span class="sd">        &gt;&gt;&gt; import wbia</span>
-<span class="sd">        &gt;&gt;&gt; ibs = wbia.opendb(&#39;testdb1&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; gid_list = ibs.get_valid_gids()[0:2]</span>
-<span class="sd">        &gt;&gt;&gt; species = wbia.const.TEST_SPECIES.ZEB_PLAIN</span>
-<span class="sd">        &gt;&gt;&gt; aids_list = ibs.detect_random_forest(gid_list, species)</span>
-<span class="sd">        &gt;&gt;&gt; # Visualize results</span>
-<span class="sd">        &gt;&gt;&gt; if ut.show_was_requested():</span>
-<span class="sd">        &gt;&gt;&gt;     import wbia.plottool as pt</span>
-<span class="sd">        &gt;&gt;&gt;     from wbia.viz import viz_image</span>
-<span class="sd">        &gt;&gt;&gt;     for fnum, gid in enumerate(gid_list):</span>
-<span class="sd">        &gt;&gt;&gt;         viz_image.show_image(ibs, gid, fnum=fnum)</span>
-<span class="sd">        &gt;&gt;&gt;     pt.show_if_requested()</span>
-<span class="sd">        &gt;&gt;&gt; # Remove newly detected annotations</span>
-<span class="sd">        &gt;&gt;&gt; ibs.delete_annots(ut.flatten(aids_list))</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># TODO: Return confidence here as well</span>
-    <span class="n">depc</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">depc_image</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;algo&#39;</span><span class="p">:</span> <span class="s1">&#39;rf&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;species&#39;</span><span class="p">:</span> <span class="n">species</span><span class="p">,</span>
-        <span class="s1">&#39;sensitivity&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="s1">&#39;nms&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s1">&#39;nms_thresh&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="n">results_list</span> <span class="o">=</span> <span class="n">depc</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s1">&#39;localizations&#39;</span><span class="p">,</span> <span class="n">gid_list</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">commit</span><span class="p">:</span>
-        <span class="n">aids_list</span> <span class="o">=</span> <span class="n">ibs</span><span class="o">.</span><span class="n">commit_localization_results</span><span class="p">(</span>
-            <span class="n">gid_list</span><span class="p">,</span> <span class="n">results_list</span><span class="p">,</span> <span class="n">note</span><span class="o">=</span><span class="s1">&#39;pyrfdetect&#39;</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">aids_list</span></div>
+<span class="c1">#     Example:</span>
+<span class="c1">#         &gt;&gt;&gt; # DISABLE_DOCTEST</span>
+<span class="c1">#         &gt;&gt;&gt; from wbia.web.apis_detect import *  # NOQA</span>
+<span class="c1">#         &gt;&gt;&gt; import wbia</span>
+<span class="c1">#         &gt;&gt;&gt; ibs = wbia.opendb(&#39;testdb1&#39;)</span>
+<span class="c1">#         &gt;&gt;&gt; gid_list = ibs.get_valid_gids()[0:2]</span>
+<span class="c1">#         &gt;&gt;&gt; species = wbia.const.TEST_SPECIES.ZEB_PLAIN</span>
+<span class="c1">#         &gt;&gt;&gt; aids_list = ibs.detect_random_forest(gid_list, species)</span>
+<span class="c1">#         &gt;&gt;&gt; # Visualize results</span>
+<span class="c1">#         &gt;&gt;&gt; if ut.show_was_requested():</span>
+<span class="c1">#         &gt;&gt;&gt;     import wbia.plottool as pt</span>
+<span class="c1">#         &gt;&gt;&gt;     from wbia.viz import viz_image</span>
+<span class="c1">#         &gt;&gt;&gt;     for fnum, gid in enumerate(gid_list):</span>
+<span class="c1">#         &gt;&gt;&gt;         viz_image.show_image(ibs, gid, fnum=fnum)</span>
+<span class="c1">#         &gt;&gt;&gt;     pt.show_if_requested()</span>
+<span class="c1">#         &gt;&gt;&gt; # Remove newly detected annotations</span>
+<span class="c1">#         &gt;&gt;&gt; ibs.delete_annots(ut.flatten(aids_list))</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     # TODO: Return confidence here as well</span>
+<span class="c1">#     depc = ibs.depc_image</span>
+<span class="c1">#     config = {</span>
+<span class="c1">#         &#39;algo&#39;: &#39;rf&#39;,</span>
+<span class="c1">#         &#39;species&#39;: species,</span>
+<span class="c1">#         &#39;sensitivity&#39;: 0.2,</span>
+<span class="c1">#         &#39;nms&#39;: True,</span>
+<span class="c1">#         &#39;nms_thresh&#39;: 0.4,</span>
+<span class="c1">#     }</span>
+<span class="c1">#     results_list = depc.get_property(&#39;localizations&#39;, gid_list, None, config=config)</span>
+<span class="c1">#     if commit:</span>
+<span class="c1">#         aids_list = ibs.commit_localization_results(</span>
+<span class="c1">#             gid_list, results_list, note=&#39;pyrfdetect&#39;</span>
+<span class="c1">#         )</span>
+<span class="c1">#         return aids_list</span>
 
-    <span class="c1"># results_list = depc.get_property(&#39;detections&#39;, gid_list, None, config=config)</span>
-    <span class="c1"># if commit:</span>
-    <span class="c1">#     aids_list = ibs.commit_detection_results(gid_list, results_list, note=&#39;pyrfdetect&#39;)</span>
-    <span class="c1">#     return aids_list</span>
+<span class="c1">#     # results_list = depc.get_property(&#39;detections&#39;, gid_list, None, config=config)</span>
+<span class="c1">#     # if commit:</span>
+<span class="c1">#     #     aids_list = ibs.commit_detection_results(gid_list, results_list, note=&#39;pyrfdetect&#39;)</span>
+<span class="c1">#     #     return aids_list</span>
 
 
 <div class="viewcode-block" id="review_detection_test"><a class="viewcode-back" href="../../../wbia.web.html#wbia.web.apis_detect.review_detection_test">[docs]</a><span class="nd">@register_route</span><span class="p">(</span><span class="s1">&#39;/test/review/detect/cnn/yolo/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
@@ -1336,7 +1336,7 @@
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

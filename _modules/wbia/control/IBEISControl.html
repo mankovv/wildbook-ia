@@ -146,10 +146,10 @@
         <span class="p">((</span><span class="s1">&#39;--no-flukematch&#39;</span><span class="p">,</span> <span class="s1">&#39;--noflukematch&#39;</span><span class="p">),</span> <span class="s1">&#39;wbia_flukematch.plugin&#39;</span><span class="p">),</span>
     <span class="p">]</span>
 
-<span class="k">if</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_argflag</span><span class="p">(</span><span class="s1">&#39;--curvrank&#39;</span><span class="p">):</span>
-    <span class="n">AUTOLOAD_PLUGIN_MODNAMES</span> <span class="o">+=</span> <span class="p">[</span>
-        <span class="p">((</span><span class="s1">&#39;--no-curvrank&#39;</span><span class="p">,</span> <span class="s1">&#39;--nocurvrank&#39;</span><span class="p">),</span> <span class="s1">&#39;wbia_curvrank._plugin&#39;</span><span class="p">),</span>
-    <span class="p">]</span>
+<span class="c1"># if ut.get_argflag(&#39;--curvrank&#39;):</span>
+<span class="c1">#     AUTOLOAD_PLUGIN_MODNAMES += [</span>
+<span class="c1">#         ((&#39;--no-curvrank&#39;, &#39;--nocurvrank&#39;), &#39;wbia_curvrank._plugin&#39;),</span>
+<span class="c1">#     ]</span>
 
 <span class="k">if</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_argflag</span><span class="p">(</span><span class="s1">&#39;--curvrank-v2&#39;</span><span class="p">):</span>
     <span class="n">AUTOLOAD_PLUGIN_MODNAMES</span> <span class="o">+=</span> <span class="p">[</span>
@@ -174,10 +174,10 @@
         <span class="p">),</span>
     <span class="p">]</span>
 
-<span class="k">if</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_argflag</span><span class="p">(</span><span class="s1">&#39;--orient2d&#39;</span><span class="p">):</span>
-    <span class="n">AUTOLOAD_PLUGIN_MODNAMES</span> <span class="o">+=</span> <span class="p">[</span>
-        <span class="p">((</span><span class="s1">&#39;--no-2d-orient&#39;</span><span class="p">,</span> <span class="s1">&#39;--no2dorient&#39;</span><span class="p">),</span> <span class="s1">&#39;wbia_2d_orientation._plugin&#39;</span><span class="p">),</span>
-    <span class="p">]</span>
+<span class="c1"># if ut.get_argflag(&#39;--orient2d&#39;):</span>
+<span class="c1">#     AUTOLOAD_PLUGIN_MODNAMES += [</span>
+<span class="c1">#         ((&#39;--no-2d-orient&#39;, &#39;--no2dorient&#39;), &#39;wbia_2d_orientation._plugin&#39;),</span>
+<span class="c1">#     ]</span>
 
 
 <span class="k">if</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_argflag</span><span class="p">(</span><span class="s1">&#39;--orient&#39;</span><span class="p">):</span>
@@ -185,10 +185,10 @@
         <span class="p">((</span><span class="s1">&#39;--no-orient&#39;</span><span class="p">,</span> <span class="s1">&#39;--noorient&#39;</span><span class="p">),</span> <span class="s1">&#39;wbia_orientation._plugin&#39;</span><span class="p">),</span>
     <span class="p">]</span>
 
-<span class="k">if</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_argflag</span><span class="p">(</span><span class="s1">&#39;--pie&#39;</span><span class="p">):</span>
-    <span class="n">AUTOLOAD_PLUGIN_MODNAMES</span> <span class="o">+=</span> <span class="p">[</span>
-        <span class="p">((</span><span class="s1">&#39;--no-pie&#39;</span><span class="p">,</span> <span class="s1">&#39;--nopie&#39;</span><span class="p">),</span> <span class="s1">&#39;wbia_pie._plugin&#39;</span><span class="p">),</span>
-    <span class="p">]</span>
+<span class="c1"># if ut.get_argflag(&#39;--pie&#39;):</span>
+<span class="c1">#     AUTOLOAD_PLUGIN_MODNAMES += [</span>
+<span class="c1">#         ((&#39;--no-pie&#39;, &#39;--nopie&#39;), &#39;wbia_pie._plugin&#39;),</span>
+<span class="c1">#     ]</span>
 
 
 <span class="k">if</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_argflag</span><span class="p">(</span><span class="s1">&#39;--pie-v2&#39;</span><span class="p">):</span>
@@ -386,7 +386,7 @@
         <span class="n">request_stagingversion</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">force_serial</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Creates a new IBEIS Controller associated with one database &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new IBEIS Controller associated with one database&quot;&quot;&quot;</span>
         <span class="c1"># if verbose and ut.VERBOSE:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">[ibs.__init__] new IBEISController&#39;</span><span class="p">)</span>
 
@@ -631,7 +631,7 @@
     <span class="c1"># ------------</span>
 
 <div class="viewcode-block" id="IBEISController.register_controller"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.register_controller">[docs]</a>    <span class="k">def</span> <span class="nf">register_controller</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; registers controller with global list &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;registers controller with global list&quot;&quot;&quot;</span>
         <span class="n">ibs_weakref</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">__ALL_CONTROLLERS__</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ibs_weakref</span><span class="p">)</span></div>
 
@@ -648,7 +648,7 @@
     <span class="c1"># ------------</span>
 
 <div class="viewcode-block" id="IBEISController.cleanup"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; call on del? &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;call on del?&quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;[self.cleanup] Observers (if any) notified [controller killed]&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">observer_weakref</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">observer_weakref_list</span><span class="p">:</span>
             <span class="n">observer_weakref</span><span class="p">()</span><span class="o">.</span><span class="n">notify_controller_killed</span><span class="p">()</span></div>
@@ -689,7 +689,7 @@
 
     <span class="nd">@profile</span>
     <span class="k">def</span> <span class="nf">_init_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_dbversion</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">request_stagingversion</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Load or create sql database &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Load or create sql database&quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">wbia.other</span> <span class="kn">import</span> <span class="n">duct_tape</span>  <span class="c1"># NOQA</span>
 
         <span class="c1"># LOAD THE DEPENDENCY CACHE BEFORE THE MAIN DATABASE SO THAT ANY UPDATE</span>
@@ -969,7 +969,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbname</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_db_name"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_db_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_db_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Alias for self.get_dbname(). &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Alias for self.get_dbname().&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dbname</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_db_init_uuid"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_db_init_uuid">[docs]</a>    <span class="nd">@register_api</span><span class="p">(</span><span class="n">CORE_DB_UUID_INIT_API_RULE</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
@@ -994,7 +994,7 @@
             <span class="k">return</span> <span class="n">ut</span><span class="o">.</span><span class="n">get_logging_dir</span><span class="p">(</span><span class="n">appname</span><span class="o">=</span><span class="s1">&#39;wbia&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_dbdir"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_dbdir">[docs]</a>    <span class="k">def</span> <span class="nf">get_dbdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; database dir with ibs internal directory &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;database dir with ibs internal directory&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbdir</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_db_core_path"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_db_core_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_db_core_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1019,7 +1019,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">trashdir</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_ibsdir"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_ibsdir">[docs]</a>    <span class="k">def</span> <span class="nf">get_ibsdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; ibs internal directory &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;ibs internal directory&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ibsdb</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_chipdir"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_chipdir">[docs]</a>    <span class="k">def</span> <span class="nf">get_chipdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1029,27 +1029,27 @@
         <span class="k">return</span> <span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_cachedir</span><span class="p">(),</span> <span class="s1">&#39;prob_chips&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_fig_dir"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_fig_dir">[docs]</a>    <span class="k">def</span> <span class="nf">get_fig_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; ibs internal directory &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;ibs internal directory&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ibsdb</span><span class="p">,</span> <span class="s1">&#39;figures&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_imgdir"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_imgdir">[docs]</a>    <span class="k">def</span> <span class="nf">get_imgdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; ibs internal directory &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;ibs internal directory&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgdir</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_uploadsdir"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_uploadsdir">[docs]</a>    <span class="k">def</span> <span class="nf">get_uploadsdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; ibs internal directory &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;ibs internal directory&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">uploadsdir</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_thumbdir"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_thumbdir">[docs]</a>    <span class="k">def</span> <span class="nf">get_thumbdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; database directory where thumbnails are cached &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;database directory where thumbnails are cached&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">thumb_dpath</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_workdir"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_workdir">[docs]</a>    <span class="k">def</span> <span class="nf">get_workdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; directory where databases are saved to &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;directory where databases are saved to&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workdir</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_cachedir"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_cachedir">[docs]</a>    <span class="k">def</span> <span class="nf">get_cachedir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; database directory of all cached files &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;database directory of all cached files&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cachedir</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_match_thumbdir"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_match_thumbdir">[docs]</a>    <span class="k">def</span> <span class="nf">get_match_thumbdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1058,7 +1058,7 @@
         <span class="k">return</span> <span class="n">match_thumb_dir</span></div>
 
 <div class="viewcode-block" id="IBEISController.get_wbia_resource_dir"><a class="viewcode-back" href="../../../wbia.control.html#wbia.control.IBEISControl.IBEISController.get_wbia_resource_dir">[docs]</a>    <span class="k">def</span> <span class="nf">get_wbia_resource_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; returns the global resource dir in .config or AppData or whatever &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;returns the global resource dir in .config or AppData or whatever&quot;&quot;&quot;</span>
         <span class="n">resource_dir</span> <span class="o">=</span> <span class="n">sysres</span><span class="o">.</span><span class="n">get_wbia_resource_dir</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">resource_dir</span></div>
 
@@ -1385,7 +1385,7 @@
       &copy;2020, Wild Me.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
